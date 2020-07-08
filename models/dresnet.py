@@ -5,9 +5,12 @@ import math
 from .basicmodule import *
 
 
-class DoubleResNet(nn.Module):
+class RoResNet(nn.Module):
+    """
+    ReLU-only pre-activation
+    """
     def __init__(self, in_data=4, out_data=5):
-        super(DoubleResNet, self).__init__()
+        super(RoResNet, self).__init__()
         kn = [16, 32, 64, 256, 512]
 
         self.in_model = ConvBlockWithKernel3(in_data, kn[0])

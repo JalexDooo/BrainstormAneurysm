@@ -146,3 +146,97 @@ class ZeroResBlock(nn.Module):
         return x
 
 
+class RoConvBlock(nn.Module):
+    """
+        Head convolution.
+    """
+    def __init__(self, in_data, out_data):
+        super(RoConvBlock, self).__init__()
+
+        self.conv1 = nn.Sequential(
+            # nn.ReLU(inplace=True),
+            nn.Conv3d(in_data, out_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(out_data)
+        )
+        self.conv2 = nn.Sequential(
+            nn.ReLU(inplace=True),
+            nn.Conv3d(out_data, out_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(out_data)
+        )
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.conv2(x)
+        return x
+
+
+class RoResBlock(nn.Module):
+    """
+    ReLU-only pre-activation
+    """
+    def __init__(self, in_data, out_data):
+        super(RoResBlock, self).__init__()
+        self.res = nn.Sequential(
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, in_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(in_data),
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, in_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(in_data)
+        )
+        self.conv = nn.Sequential(
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, out_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(out_data)
+        )
+
+    def forward(self, x):
+        t = self.res(x)
+        x = self.conv(t+x)
+        return x
+
+
+class FConvBlock(nn.Module):
+    """
+        Head convolution.
+    """
+    def __init__(self, in_data, out_data):
+        super(FConvBlock, self).__init__()
+
+        self.conv1 = nn.Conv3d(in_data, out_data, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Sequential(
+            nn.BatchNorm3d(out_data),
+            nn.ReLU(inplace=True),
+            nn.Conv3d(out_data, out_data, kernel_size=3, stride=1, padding=1),
+        )
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.conv2(x)
+        return x
+
+
+class FResBlock(nn.Module):
+    """
+    Full pre-activation
+    """
+    def __init__(self, in_data, out_data):
+        super(FResBlock, self).__init__()
+        self.res = nn.Sequential(
+            nn.BatchNorm3d(in_data),
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, in_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(in_data),
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, in_data, kernel_size=3, stride=1, padding=1)
+        )
+        self.conv = nn.Sequential(
+            nn.BatchNorm3d(in_data),
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, out_data, kernel_size=3, stride=1, padding=1)
+        )
+
+    def forward(self, x):
+        t = self.res(x)
+        x = self.conv(t+x)
+        return x
