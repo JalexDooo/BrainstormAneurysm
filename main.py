@@ -137,6 +137,7 @@ def Aneu_train(**kwargs):
 
 	torch.save(model.state_dict(), os.path.join(save_dir, 'task_%s__final_epoch.pth' % (opt.task)))
 
+
 def Aneu_predict(**kwargs):
 	if not t.cuda.is_available():
 		print('无法使用CUDA，所以无法训练')
@@ -227,6 +228,7 @@ def Aneu_predict(**kwargs):
 			im = nib.Nifti1Image(out_image, affine[0])
 			nib.save(im, path + '/' + name[0] + '_image.nii.gz')
 
+
 def Aneu_test(**kwargs):
 	if not t.cuda.is_available():
 		print('无法使用CUDA，所以无法训练')
@@ -302,3 +304,7 @@ def Aneu_test(**kwargs):
 	save = pd.DataFrame(score, columns=['Name', 'Dice', 'Sensitivity', 'Specificity'])
 	save.to_csv('./' + opt.model + '_' + opt.load_model_path[:-4] + '_multi_score.csv', index=False, header=False)
 
+
+if __name__ == '__main__':
+	import fire
+	fire.Fire()
