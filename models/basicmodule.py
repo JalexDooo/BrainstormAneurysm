@@ -122,5 +122,27 @@ class NormalResBlock(nn.Module):
         return x
 
 
+class ZeroResBlock(nn.Module):
+    def __init__(self, in_data, out_data):
+        super(ZeroResBlock, self).__init__()
+        self.res1 = nn.Sequential(
+            nn.Conv3d(in_data, in_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(in_data),
+            nn.RReLU(inplace=True),
+            nn.Conv3d(in_data, in_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(in_data)
+        )
+        self.act = nn.RReLU(inplace=False)
+        self.conv1 = nn.Sequential(
+            nn.Conv3d(in_data, out_data, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm3d(out_data),
+            nn.RReLU(inplace=True)
+        )
+
+    def forward(self, x):
+        t = self.res1(x)
+        x = self.act(x+t)
+        x = self.conv1(x)
+        return x
 
 

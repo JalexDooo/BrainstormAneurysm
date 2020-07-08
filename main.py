@@ -60,6 +60,9 @@ def Aneu_train(**kwargs):
 		model.load_state_dict(t.load('./' + save_dir + opt.load_model_path))
 		print('load model')
 
+	fig_loss = []
+	fig_dice = []
+
 	for epoch in range(opt.max_epoch):
 		print('----------------------epoch %d--------------------' % (epoch))
 
@@ -105,37 +108,16 @@ def Aneu_train(**kwargs):
 					train_dice.append(d)
 		print('train_loss : ' + str(sum(train_loss) / (len(train_loss) * 1.0)))
 		print('train_dice : ' + str(sum(train_dice) / (len(train_dice) * 1.0)))
-
-		# test_loss = []
-		# test_dice = []
-		# model.eval()
-		# with t.no_grad():
-		# 	for ii, (image, label, name) in enumerate(test_dataloader):
-		# 		for k in range(2):
-		# 			img = image[:, k, :, :, :, :]
-		# 			lbl = label[:, k, :, :, :]
-		#
-		# 			for fck in range(7):
-		# 				img_ = img[:, :, :, :, 64 * fck:64 * fck + 64]
-		# 				lbl_ = lbl[:, :, :, 64 * fck:64 * fck + 64]
-		# 				img_ = img_.cuda()
-		# 				lbl_ = lbl_.cuda()
-		#
-		# 				predicts = model(img_)
-		# 				loss = criterion(predicts, lbl_.long())
-		# 				test_loss.append(float(loss))
-		#
-		# 				value, tmp = t.max(predicts, dim=1)
-		# 				d = dice(tmp, lbl_.long())
-		# 				test_dice.append(d)
-		#
-		# 				print('ii_{}, k_{}, fck_{}, test_dice: {} '.format(ii, k, fck, d))
-		# 	print('test_loss : ' + str(sum(test_loss) / (len(test_loss) * 1.0)))
-		# 	print('test_dice : ' + str(sum(test_dice) / (len(test_dice) * 1.0)))
+		fig_loss.append(sum(train_loss) / (len(train_loss) * 1.0))
+		fig_dice.append(sum(train_dice) / (len(train_dice) * 1.0))
 
 		torch.save(model.state_dict(), os.path.join(save_dir, 'task_%s__epoch_%s.pth'%(opt.task, epoch)))
 
 	torch.save(model.state_dict(), os.path.join(save_dir, 'task_%s__final_epoch.pth' % (opt.task)))
+	print('--------------fig loss-------------')
+	print(fig_loss)
+	print('--------------fig dice-------------')
+	print(fig_dice)
 
 
 def Aneu_predict(**kwargs):
@@ -303,6 +285,31 @@ def Aneu_test(**kwargs):
 			# return
 	save = pd.DataFrame(score, columns=['Name', 'Dice', 'Sensitivity', 'Specificity'])
 	save.to_csv('./' + opt.model + '_' + opt.load_model_path[:-4] + '_multi_score.csv', index=False, header=False)
+
+
+# def tem():
+# 	#定义两个数组
+# 	Loss_list = []
+# 	Accuracy_list = []
+#
+# 	Loss_list.append(train_loss / (len(train_dataset)))
+# 	Accuracy_list.append(100 * train_acc / (len(train_dataset)))
+#
+# 	#我这里迭代了200次，所以x的取值范围为(0，200)，然后再将每次相对应的准确率以及损失率附在x上
+# 	x1 = range(0, 200)
+# 	x2 = range(0, 200)
+# 	y1 = Accuracy_list
+# 	y2 = Loss_list
+# 	plt.subplot(2, 1, 1)
+# 	plt.plot(x1, y1, 'o-')
+# 	plt.title('Test accuracy vs. epoches')
+# 	plt.ylabel('Test accuracy')
+# 	plt.subplot(2, 1, 2)
+# 	plt.plot(x2, y2, '.-')
+# 	plt.xlabel('Test loss vs. epoches')
+# 	plt.ylabel('Test loss')
+# 	plt.show()
+# 	plt.savefig("accuracy_loss.jpg")
 
 
 if __name__ == '__main__':
