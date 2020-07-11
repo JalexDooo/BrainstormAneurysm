@@ -4,7 +4,7 @@
 
 # ----------------------------------------------------------
 # task lr==0.0001 ->
-cd /home/aneu/BrainstormAneurysm && python main.py Aneu_train --task='Random' --model='ZeroResNet' --max_epoch=80 --batch_size=8 --lr=0.0001
+cd /home/aneu/BrainstormAneurysm && python main.py Aneu_train --task='Random' --model='ZeroResNet' --max_epoch=80 --batch_size=8 --lr=0.001 #--load_model_path='task_Random__epoch_33.pth'
 # task lr==0.0001 ->
-cd /home/aneu/BrainstormAneurysm && python main.py Aneu_train --task='Random' --model='NormalResNet' --max_epoch=80 --batch_size=8 --lr=0.0001
+#cd /home/aneu/BrainstormAneurysm && python main.py Aneu_train --task='Random' --model='NormalResNet' --max_epoch=80 --batch_size=4 --lr=0.001
 

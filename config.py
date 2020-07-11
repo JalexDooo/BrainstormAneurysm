@@ -36,7 +36,7 @@ class DefaultConfig(object):
     max_epoch = 2
     random_epoch = 4
     lr = 0.001
-    lr_decay = 0.95
+    lr_decay = 0.99
     weight_decay = 1e-4
 
     def _parse(self, kwargs):

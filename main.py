@@ -62,7 +62,7 @@ def Aneu_train(**kwargs):
 
 	fig_loss = []
 	fig_dice = []
-
+	lr = opt.lr
 	for epoch in range(opt.max_epoch):
 		print('----------------------epoch %d--------------------' % (epoch))
 
@@ -77,7 +77,8 @@ def Aneu_train(**kwargs):
 
 		criterion = nn.CrossEntropyLoss()
 		print('lr: ', opt.lr)
-		optimizer = optim.Adam(params=model.parameters(), lr=opt.lr, betas=(0.9, 0.999))
+		optimizer = optim.Adam(params=model.parameters(), lr=lr, betas=(0.9, 0.999))
+		lr *= opt.lr_decay
 
 		print('criterion and optimizer is finished.')
 		# print(model.eval())
@@ -310,6 +311,13 @@ def Aneu_test(**kwargs):
 # 	plt.ylabel('Test loss')
 # 	plt.show()
 # 	plt.savefig("accuracy_loss.jpg")
+
+def test():
+	lr = opt.lr
+	lr_decay = 0.99
+	for i in range(50):
+		print(i, ' --> ', lr)
+		lr *= lr_decay
 
 
 if __name__ == '__main__':

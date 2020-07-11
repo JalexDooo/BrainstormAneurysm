@@ -1,4 +1,4 @@
 from .nresnet import NormalResNet
 from .zresnet import ZeroResNet
-from .dresnet import DoubleResNet
+from .dresnet import RoResNet
 from .tresnet import TriResNet
