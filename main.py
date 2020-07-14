@@ -315,7 +315,7 @@ def Aneu_test(**kwargs):
 def test():
 	lr = opt.lr
 	lr_decay = 0.99
-	for i in range(50):
+	for i in range(80):
 		print(i, ' --> ', lr)
 		lr *= lr_decay
 
