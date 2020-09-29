@@ -72,6 +72,7 @@ def multi_train_random(**kwargs):
 	print('criterion and optimizer is finished.')
 	fig_loss = []
 	fig_dice = []
+<<<<<<< HEAD
 
 	for kkepoch in range(opt.random_epoch):
 		print('----------------------kkepoch %d--------------------' % (kkepoch))
@@ -79,6 +80,11 @@ def multi_train_random(**kwargs):
 		criterion = nn.CrossEntropyLoss()
 		optimizer = optim.Adam(params=model.parameters(), lr=lr, betas=(0.9, 0.999))
 		lr *= opt.lr_decay
+=======
+	lr = opt.lr
+	for epoch in range(opt.max_epoch):
+		print('----------------------epoch %d--------------------' % (epoch))
+>>>>>>> 04555ae19b35fd22d3a3d0df2711d90c6248074d
 
 		# pytorch数据处理
 		train_data = BraTS_Random(opt.train_root_path, opt.val_root_path, is_train=True, task=opt.task)
@@ -88,6 +94,17 @@ def multi_train_random(**kwargs):
 		# test_dataloader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
 		print('train and test dataloader load finished.')
 
+<<<<<<< HEAD
+=======
+		criterion = nn.CrossEntropyLoss()
+		print('lr: ', opt.lr)
+		optimizer = optim.Adam(params=model.parameters(), lr=lr, betas=(0.9, 0.999))
+		lr *= opt.lr_decay
+
+		print('criterion and optimizer is finished.')
+		# print(model.eval())
+
+>>>>>>> 04555ae19b35fd22d3a3d0df2711d90c6248074d
 		train_loss = []
 		train_dice = []
 		model.train()
@@ -247,6 +264,7 @@ def multi_val_random(**kwargs):
 
 def test():
 	lr = opt.lr
+<<<<<<< HEAD
 	for _ in range(100):
 		print(lr)
 		lr *= opt.lr_decay
@@ -254,6 +272,12 @@ def test():
 
 def test_():
 	print('hello world')
+=======
+	lr_decay = 0.99
+	for i in range(80):
+		print(i, ' --> ', lr)
+		lr *= lr_decay
+>>>>>>> 04555ae19b35fd22d3a3d0df2711d90c6248074d
 
 
 if __name__ == '__main__':
