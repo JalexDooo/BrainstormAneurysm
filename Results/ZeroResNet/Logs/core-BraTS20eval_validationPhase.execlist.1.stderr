@@ -1,0 +1,522 @@
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411528989 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_0.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411531104 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_1.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411533007 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_2.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411535334 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_3.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411537661 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_4.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411539778 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_5.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411541893 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_6.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411544008 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_7.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411546123 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_8.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411548026 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_9.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411550142 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_10.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411551410 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_11.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411552043 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_12.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411552887 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_13.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411553731 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_14.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411554364 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_15.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411555208 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_16.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411556052 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_17.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411556896 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_18.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411557740 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_19.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411558584 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_20.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411559217 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_21.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411560272 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_22.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411560905 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_23.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411561749 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_24.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411562382 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_25.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411563015 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_26.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411563859 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_27.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411564703 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_28.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411565547 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_29.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411566391 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_30.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411567024 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_31.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411567868 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_32.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411568713 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_33.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411569558 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_34.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411570403 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_35.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411571248 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_36.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411571882 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_37.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411572727 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_38.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411573360 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_39.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411574205 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_40.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411575050 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_41.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411575895 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_42.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411576740 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_43.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411577373 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_44.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411578218 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_45.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411578852 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_46.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411579908 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_47.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411580753 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_48.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411581598 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_49.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411582231 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_50.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411582865 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_51.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411583921 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_52.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411584766 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_53.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411585822 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_54.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411586455 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_55.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411587089 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_56.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411587723 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_57.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411588569 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_58.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411589626 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_59.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411590260 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_60.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411591106 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_61.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411591953 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_62.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411592376 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_63.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411593011 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_64.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411593646 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_65.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411594281 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_66.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411594916 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_67.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411595339 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_68.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411595762 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_69.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411596397 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_70.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411597032 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_71.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411597455 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_72.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411598090 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_73.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411598725 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_74.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411599360 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_75.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411599993 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_76.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411600838 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_77.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411601683 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_78.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411602528 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_79.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411603161 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_80.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411604006 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_81.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411604639 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_82.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411605484 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_83.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411606117 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_84.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411606962 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_85.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411607597 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_86.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411608443 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_87.nii.gz
+Missing BraTS label in Label_2: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411609077 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_88.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411609711 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_89.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411610133 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_90.nii.gz
+Missing BraTS label in Label_2: 1
+Missing BraTS label in Label_1: 2
+Missing BraTS label in Label_1: 4
+Missing BraTS label in Label_2: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411610344 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_91.nii.gz
+Missing BraTS label in Label_2: 1
+Missing BraTS label in Label_1: 4
+Missing BraTS label in Label_2: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411610766 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_92.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411611188 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_93.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411611610 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_94.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411612032 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_95.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411612454 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_96.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411612876 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_97.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411613298 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_98.nii.gz
+Missing BraTS label in Label_1: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411613720 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_99.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411614142 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_100.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411614565 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_101.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411614988 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_102.nii.gz
+Missing BraTS label in Label_1: 4
+Missing BraTS label in Label_2: 4
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411615411 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_103.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411615834 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_104.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411616257 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_105.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411616680 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_106.nii.gz
+Missing BraTS label in Label_2: 1
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411617103 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_107.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411617526 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_108.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411617949 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_109.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411618372 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_110.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411618795 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_111.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411619007 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_112.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411619430 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_113.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411619853 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_114.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411620276 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_115.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411620699 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_116.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411621122 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_117.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411621545 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_118.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411621968 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_119.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411622391 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_120.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411622814 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_121.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411623237 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_122.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411623660 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_123.nii.gz
+++ 3dcalc: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: A cast of thousands
+++ WARNING: file /cbica/home/IPP/.afni.log is now 4411624083 (4.4 billion [giga]) bytes long!
+++ Output dataset /scratch/ipp/tmp.unia5LaBYW/temp_mask_124.nii.gz

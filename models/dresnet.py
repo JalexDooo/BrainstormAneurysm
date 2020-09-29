@@ -13,24 +13,24 @@ class RoResNet(nn.Module):
         super(RoResNet, self).__init__()
         kn = [16, 32, 64, 256, 512]
 
-        self.in_model = ConvBlockWithKernel3(in_data, kn[0])
+        self.in_model = RoConvBlock(in_data, kn[0])
 
         # pathway-1
         self.layerin1 = nn.Sequential(
             nn.MaxPool3d(kernel_size=2, stride=2, padding=0),
-            ZeroResBlock(kn[0], kn[1])
+            RoResBlock(kn[0], kn[1])
         )
         self.layer1_1 = nn.Sequential(
             nn.MaxPool3d(kernel_size=2, stride=2, padding=0),
-            ZeroResBlock(kn[1], kn[2])
+            RoResBlock(kn[1], kn[2])
         )
         self.layer1_2 = nn.Sequential(
             nn.MaxPool3d(kernel_size=2, stride=2, padding=0),
-            ZeroResBlock(kn[2], kn[3])
+            RoResBlock(kn[2], kn[3])
         )
         self.layer1_3 = nn.Sequential(
             nn.MaxPool3d(kernel_size=2, stride=2, padding=0),
-            ZeroResBlock(kn[3], kn[4])
+            RoResBlock(kn[3], kn[4])
         )
         self.up1 = UpBlock(kn[4], kn[3])
         self.up2 = UpBlock(kn[3], kn[2])

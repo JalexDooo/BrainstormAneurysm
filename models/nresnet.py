@@ -8,7 +8,7 @@ from .basicmodule import *
 class NormalResNet(nn.Module):
     def __init__(self, in_data=4, out_data=5):
         super(NormalResNet, self).__init__()
-        kn = [16, 32, 64, 256, 512]
+        kn = [32, 64, 128, 256, 512]
 
         self.in_model = ConvBlockWithKernel3(in_data, kn[0])
 

@@ -7,23 +7,16 @@ class DefaultConfig(object):
     vis_port = 8097
     model = 'UNet3D'
 
-    train_root_path = '/home/sunjindong/dataset/MICCAI_BraTS_2019_Data_Training/MICCAI_BraTS_2019_Data_Training'
-    val_root_path = '/home/sunjindong/dataset/MICCAI_BraTS_2019_Data_Validation/MICCAI_BraTS_2019_Data_Validation'
-    tttt = '/home/test/dateset/MICCAI_BraTS_2019_Data_Validation/MICCAI_BraTS_2019_Data_Validation'
-    ttttt = '/home/test/dataset/MICCAI_BraTS_2019_Data_Training/MICCAI_BraTS_2019_Data_Training'
-    # val_root_path = '/home/sunjindong/dataset/MICCAI_BraTS17_Data_Validation_IPP/Brats17ValidationData'
-
-    # aneu_path = '/Users/juntysun/Downloads/数据集/动脉瘤数据'
-    aneu_path = '/home/aneu/dataset/dongmai'
-    aneu_val_path = '/home/aneu/dataset/final_val_dataset'
-    aneu_output_path = '/home/aneu/Brainstorm/final_val'
+    train_root_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
+    val_root_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_ValidationData/MICCAI_BraTS2020_ValidationData'
+    # '/home/sunjindong/dataset/BraTS_TestData_JSun_paper31/MICCAI_BraTS2020_TestingData'
 
     local_root_path = '/Users/juntysun/Downloads/数据集/MICCAI_BraTS_2019_Data_Training'
 
     test_img_path = ''
     test_images = './test_images/'
 
-    task = 'WT'
+    task = 'Random'
 
     predict_nibable_path = './predict_nibable'
 
@@ -36,7 +29,7 @@ class DefaultConfig(object):
     max_epoch = 2
     random_epoch = 4
     lr = 0.001
-    lr_decay = 0.95
+    lr_decay = 0.99
     weight_decay = 1e-4
 
     def _parse(self, kwargs):

@@ -35,19 +35,27 @@ from utils.utils import *
 from config import opt
 
 
-def Aneu_train(**kwargs):
+def data_test():
+	# data = BraTS_Random('/Volumes/309实验室专属/孙近东/数据集/MICCAI_BraTS2020_TrainingData', opt.val_root_path, is_train=True, task=opt.task)
+	# image, label = data[0]
+	lr = opt.lr
+	for _ in range(100):
+		lr *= opt.lr_decay
+		print('%.6f' % lr)
+
+
+def multi_train_random(**kwargs):
+
 	if not t.cuda.is_available():
 		print('无法使用CUDA，所以无法训练')
 		return
-
 	device_ids = [0, 1, 2, 3]
 	opt._parse(kwargs)
 	print('Task %s' % (opt.task))
-
 	# 配置模型
-	model = getattr(models, opt.model)(1, 2)
+	model = getattr(models, opt.model)()
 	print('model is : ', opt.model)
-	save_dir = 'ckpt_aneu_' + opt.model + '/'
+	save_dir = 'ckpt_' + opt.model + '/'
 
 	if not os.path.exists(save_dir):
 		os.mkdir(save_dir)
@@ -60,67 +68,65 @@ def Aneu_train(**kwargs):
 		model.load_state_dict(t.load('./' + save_dir + opt.load_model_path))
 		print('load model')
 
+	lr = opt.lr
+	print('criterion and optimizer is finished.')
 	fig_loss = []
 	fig_dice = []
 
-	for epoch in range(opt.max_epoch):
-		print('----------------------epoch %d--------------------' % (epoch))
+	for kkepoch in range(opt.random_epoch):
+		print('----------------------kkepoch %d--------------------' % (kkepoch))
+
+		criterion = nn.CrossEntropyLoss()
+		optimizer = optim.Adam(params=model.parameters(), lr=lr, betas=(0.9, 0.999))
+		lr *= opt.lr_decay
 
 		# pytorch数据处理
-		train_data = AneuMulti(opt.aneu_path)
-		# test_data = AneuMulti(opt.aneu_val_path)
+		train_data = BraTS_Random(opt.train_root_path, opt.val_root_path, is_train=True, task=opt.task)
 		print('train_data and test_data load finished.')
 
 		train_dataloader = DataLoader(train_data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_workers)
-		# test_dataloader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_workers)
+		# test_dataloader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
 		print('train and test dataloader load finished.')
-
-		criterion = nn.CrossEntropyLoss()
-		print('lr: ', opt.lr)
-		optimizer = optim.Adam(params=model.parameters(), lr=opt.lr, betas=(0.9, 0.999))
-
-		print('criterion and optimizer is finished.')
-		# print(model.eval())
 
 		train_loss = []
 		train_dice = []
 		model.train()
-		for ii, (image, label, name) in enumerate(train_dataloader):
-			for k in range(2):
-				img = image[:, k, :, :, :, :]
-				lbl = label[:, k, :, :, :]
+		for ii, (image, label) in enumerate(train_dataloader):
+			# img = image.cuda()
+			# lbl = label.cuda()
+			for i in range(9):
+				img_ = image[:, i, :, :, :, :]
+				lbl_ = label[:, i, :, :, :]
+				img_ = img_.cuda()
+				lbl_ = lbl_.cuda()
 
-				for fck in range(7):
-					img_ = img[:, :, :, :, 64*fck:64*(fck+1)]
-					lbl_ = lbl[:, :, :, 64*fck:64*(fck+1)]
-					img_ = img_.cuda()
-					lbl_ = lbl_.cuda()
+				optimizer.zero_grad()
+				predicts = model(img_)
+				# print('predicts.shape(): ', predicts.shape)
+				# print('lbl.shape(): ', lbl_.shape)
+				loss = criterion(predicts, lbl_.long())
+				train_loss.append(float(loss))
+				loss.backward()
+				optimizer.step()
 
-					optimizer.zero_grad()
-					predicts = model(img_)
-					loss = criterion(predicts, lbl_.long())
-					train_loss.append(float(loss))
-					loss.backward()
-					optimizer.step()
+				value, tmp = t.max(predicts, dim=1)
 
-					value, tmp = t.max(predicts, dim=1)
-					d = dice(tmp, lbl_.long())
-					train_dice.append(d)
+				d = dice(tmp, lbl_.long())
+				# print('d: ', d)
+				train_dice.append(d)
+
 		print('train_loss : ' + str(sum(train_loss) / (len(train_loss) * 1.0)))
 		print('train_dice : ' + str(sum(train_dice) / (len(train_dice) * 1.0)))
 		fig_loss.append(sum(train_loss) / (len(train_loss) * 1.0))
 		fig_dice.append(sum(train_dice) / (len(train_dice) * 1.0))
-
-		torch.save(model.state_dict(), os.path.join(save_dir, 'task_%s__epoch_%s.pth'%(opt.task, epoch)))
+		torch.save(model.state_dict(), os.path.join(save_dir, 'task_%s__epoch_%s.pth'%(opt.task, kkepoch)))
 
 	torch.save(model.state_dict(), os.path.join(save_dir, 'task_%s__final_epoch.pth' % (opt.task)))
-	print('--------------fig loss-------------')
 	print(fig_loss)
-	print('--------------fig dice-------------')
 	print(fig_dice)
 
 
-def Aneu_predict(**kwargs):
+def multi_val_random(**kwargs):
 	if not t.cuda.is_available():
 		print('无法使用CUDA，所以无法训练')
 		return
@@ -130,161 +136,89 @@ def Aneu_predict(**kwargs):
 	print('Task %s' % (opt.task))
 
 	# 配置模型
-	model = getattr(models, opt.model)(in_data=1, out_data=2)
+	model = getattr(models, opt.model)()
 	print('model is : ', opt.model)
-	save_dir = 'ckpt_aneu_' + opt.model + '/'
+	save_dir = 'ckpt_' + opt.model + '/'
 
 	if not os.path.exists(save_dir):
 		os.mkdir(save_dir)
 
-	path = opt.aneu_output_path
-	path += '_' + opt.model + '_' + opt.load_model_path[:-4]
-
+	print('Start load DataParallels')
+	model = nn.DataParallel(model)
+	model = model.cuda(device=device_ids[0])
+	print('Loading DataParallel finished.')
+	if opt.load_model_path:
+		model.load_state_dict(t.load('./' + save_dir + opt.load_model_path))
+		print('load model')
+	# output path
+	path = opt.predict_nibable_path
 	if not os.path.exists(path):
 		os.mkdir(path)
 
-	print('Start load DataParallels')
-	model = nn.DataParallel(model)
-	model = model.cuda(device=device_ids[0])
-	print('Loading DataParallel finished.')
-	if opt.load_model_path:
-		model.load_state_dict(t.load('./' + save_dir + opt.load_model_path))
-		print('load model')
+	# pytorch数据处理
+	val_data = BraTS_Random(opt.train_root_path, opt.val_root_path, is_train=False, task=opt.task)
+	# test_data = BraTS2017(opt.train_root_path, opt.val_root_path, is_train=False)
+	print('train_data and test_data load finished.')
+
+	val_dataloader = DataLoader(val_data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_workers)
+	# test_dataloader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
+	print('train and test dataloader load finished.')
+
+	criterion = nn.CrossEntropyLoss()
+	optimizer = optim.Adam(params=model.parameters(), lr=opt.lr, betas=(0.9, 0.999))
+	best_dice = -1
+	best_epoch = -1
+	print('criterion and optimizer is finished.')
+	print(model.eval())
+
+	predictss = []
+	predicts_names = []
+
+	save_nii_head_path = opt.val_root_path + '/BraTS20_Testing_001/BraTS20_Testing_001_flair.nii.gz'
+	# save_nii_head_path = opt.val_root_path + '/Brats18_CBICA_AAM_1/Brats18_CBICA_AAM_1_flair.nii.gz'
+	head_image = nib.load(save_nii_head_path)
+	affine = head_image.affine
 
 	for epoch in range(opt.max_epoch):
 		print('----------------------epoch %d--------------------'%(epoch))
-
-		# pytorch数据处理
-		train_data = AneuMulti(opt.aneu_path, is_train=False, val_path=opt.aneu_val_path)
-		print('train_data and test_data load finished.')
-
-		train_dataloader = DataLoader(train_data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.num_workers)
-
 		train_loss = []
 		train_dice = []
-		for ii, (image, label, img_shape, index_min, index_max, affine, name) in enumerate(train_dataloader):
-			predict = []
-			iimage = []
-			for k in range(2):
-				img = image[:, k, :, :, :, :]
-				img = img.cuda()
+		for image, name, box_min, box_max in val_dataloader:
+			img = image.cuda()
+			out_predict = []
 
-				for fck in range(7):
-					img_ = img[:, :, :, :, 64*fck:64*fck+64]
+			for k in range(9):
+				img_ = img[:, k, :, :, :]
+				predicts = model(img_)
+				value, tmp = t.max(predicts, dim=1)
+				out_predict.append(tmp.int())
+			predict0 = t.cat((out_predict[0], out_predict[1]), dim=-1)
+			predict0 = t.cat((predict0, out_predict[2]), dim=-1)
 
-					predicts = model(img_)
+			predict1 = t.cat((out_predict[3], out_predict[4]), dim=-1)
+			predict1 = t.cat((predict1, out_predict[5]), dim=-1)
 
-					value, tmp = t.max(predicts, dim=1)
-					predict.append(tmp.int().data.cpu())
-					iimage.append(img_.data.cpu())
+			predict2 = t.cat((out_predict[6], out_predict[7]), dim=-1)
+			predict2 = t.cat((predict2, out_predict[8]), dim=-1)
 
-			predict1 = t.cat((predict[0], predict[1]), dim=3)
-			for i in range(2, 7):
-				predict1 = t.cat((predict1, predict[i]), dim=3)
-			predict2 = t.cat((predict[7], predict[8]), dim=3)
-			for i in range(9, 14):
-				predict2 = t.cat((predict2, predict[i]), dim=3)
-			out_predict = t.cat((predict1, predict2), dim=1).numpy()
+			predict = t.cat((predict0, predict1), dim=-2)
+			predict = t.cat((predict, predict2), dim=-2)
 
-			image1 = t.cat((iimage[0], iimage[1]), dim=4)
-			for i in range(2, 7):
-				image1 = t.cat((image1, iimage[i]), dim=4)
-			image2 = t.cat((iimage[7], iimage[8]), dim=4)
-			for i in range(9, 14):
-				image2 = t.cat((image2, iimage[i]), dim=4)
-			out_image = t.cat((image1, image2), dim=2).numpy()
-			out_image = out_image[:, 0, :, :, :]
+			predict = predict.data.cpu().numpy()
 
-			# [128, 448, 448]
-			# print('shape: ', out_image[0].shape)
-			out_image = crop_with_box(out_image[0], np.array([0, 0, 0]), img_shape)
-			out_predict = crop_with_box(out_predict[0], np.array([0, 0, 0]), img_shape)
-			# print('shape_: ', out_image.shape)
+			pp = np.zeros((155, 240, 240))
+			x, y, z = box_min
+			pp[x:x + 144, y:y + 192, z:z + 192] = predict[0]
+			predict = np.transpose(pp, [2, 1, 0])
+			predict = out_precessing(predict)
+			predictss.append(predict)
+			predicts_names.append(name[0])
 
-			out_image = np.transpose(out_image, [2, 1, 0])
-			out_predict = np.transpose(out_predict, [2, 1, 0])
-
-			# affine [0]: batch size
-			output = nib.Nifti1Image(out_predict, affine[0])
-			nib.save(output, path + '/' + name[0] + '_predict.nii.gz')
-			im = nib.Nifti1Image(out_image, affine[0])
-			nib.save(im, path + '/' + name[0] + '_image.nii.gz')
-
-
-def Aneu_test(**kwargs):
-	if not t.cuda.is_available():
-		print('无法使用CUDA，所以无法训练')
-		return
-
-	device_ids = [0]
-	opt._parse(kwargs)
-	print('Task %s' % (opt.task))
-
-	# 配置模型
-	model = getattr(models, opt.model)(in_data=1, out_data=2)
-	print('model is : ', opt.model)
-	save_dir = 'ckpt_aneu_' + opt.model + '/'
-
-	if not os.path.exists(save_dir):
-		os.mkdir(save_dir)
-
-	print('Start load DataParallels')
-	model = nn.DataParallel(model)
-	model = model.cuda(device=device_ids[0])
-	print('Loading DataParallel finished.')
-	if opt.load_model_path:
-		model.load_state_dict(t.load('./' + save_dir + opt.load_model_path))
-		print('load model')
-
-	score = []
-	score.append(['Name', 'Dice', 'Sensitivity', 'Specificity'])
-
-	for epoch in range(opt.max_epoch):
-		print('----------------------epoch %d--------------------'%(epoch))
-
-		# pytorch数据处理
-		train_data = AneuMulti(opt.aneu_path, is_train=True, val_path=opt.aneu_val_path)
-		print('train_data and test_data load finished.')
-
-		train_dataloader = DataLoader(train_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
-
-		for ii, (image, label, name) in enumerate(train_dataloader):
-			test_dice = []
-			test_sensitivity = []
-			test_specificity = []
-			predict = []
-			iimage = []
-			for k in range(2):
-				img = image[:, k, :, :, :, :]
-				lbl = label[:, k, :, :, :]
-				img = img.cuda()
-				lbl = lbl.cuda()
-
-				for fck in range(7):
-					img_ = img[:, :, :, :, 64*fck:64*fck+64]
-					lbl_ = lbl[:, :, :, 64*fck:64*fck+64]
-					predicts = model(img_)
-
-					value, tmp = t.max(predicts, dim=1)
-					d = dice(tmp, lbl_.long())
-					se = sensitivity(tmp, lbl_.long())
-					sp = specificity(tmp, lbl_.long())
-					predict.append(tmp.int().data.cpu())
-					iimage.append(img_.data.cpu())
-					test_dice.append(d)
-					test_sensitivity.append(se)
-					test_specificity.append(sp)
-			lbl_dice = sum(test_dice)/len(test_dice)
-			lbl_se = sum(test_sensitivity)/len(test_sensitivity)
-			lbl_sp = sum(test_specificity)/len(test_specificity)
-			score.append([name, str(lbl_dice), str(lbl_se), str(lbl_sp)])
-			# if lbl_dice < 0.7:
-			print('test dice: {} -->  {}'.format(name, lbl_dice))
-			print('test sensitivity: {} -->  {}'.format(name, lbl_se))
-			print('test specificity: {} -->  {}'.format(name, lbl_sp))
-			# return
-	save = pd.DataFrame(score, columns=['Name', 'Dice', 'Sensitivity', 'Specificity'])
-	save.to_csv('./' + opt.model + '_' + opt.load_model_path[:-4] + '_multi_score.csv', index=False, header=False)
+	predictss = np.array(predictss)
+	predicts_names = np.array(predicts_names)
+	for i in range(len(predictss)):
+		output = nib.Nifti1Image(predictss[i], affine)
+		nib.save(output, path + predicts_names[i] + '.nii.gz')
 
 
 # def tem():
@@ -310,6 +244,16 @@ def Aneu_test(**kwargs):
 # 	plt.ylabel('Test loss')
 # 	plt.show()
 # 	plt.savefig("accuracy_loss.jpg")
+
+def test():
+	lr = opt.lr
+	for _ in range(100):
+		print(lr)
+		lr *= opt.lr_decay
+
+
+def test_():
+	print('hello world')
 
 
 if __name__ == '__main__':

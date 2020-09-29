@@ -19,7 +19,7 @@ def load_hgg_lgg_files(path):
     """
         加载HGG和LGG所有文件，以每个文件夹作为一个训练数据自己。
     """
-    return glob.glob(path + '/HGG/*') + glob.glob(path + '/LGG/*')
+    return glob.glob(path + '/*')
 
 
 def load_val_file(path):
@@ -194,15 +194,28 @@ def get_precise_labels(image):
     return image * 1.0
 
 
-########################### 动脉瘤处理
+# 动脉瘤处理
 def load_aneu_image_path(path):
     return glob.glob(path + '/1/*') + glob.glob(path + '/2/*') + glob.glob(path + '/3/*')
 
-## WT: label==2, ET: label==4, TC: label==1
-# image = load_nii_to_array('/Users/juntysun/Downloads/Create/BrainstormTS/brats2019_val_moduletest5_random/BraTS19_UAB_3448_1.nii.gz')
-# print((image==1).sum())
-# print((image==2).sum())
-# print((image==4).sum())
-# 1247
-# 22514
-# 12776
+
+def rotate_image(image):
+    print('------------rotate----------')
+    rotated_data = np.zeros(image.shape, dtype=np.float32)
+    print(rotated_data.shape)
+    rotation_angle_x = np.random.uniform() * 2 * np.pi
+    rotation_angle_y = np.random.uniform() * 2 * np.pi
+    rotation_angle_z = np.random.uniform() * 2 * np.pi
+
+    for modal in range(image.shape[0]):
+        print(rotation_angle_x)
+        print(rotation_angle_y)
+        print(rotation_angle_z)
+        cos_x = np.cos(rotation_angle_x)
+        sin_x = np.cos(rotation_angle_x)
+        rotation_matrix_x = np.array([[1, 0, 0],
+                                      [0, cos_x, -sin_x],
+                                      [0, sin_x, cos_x]])
+
+    print('--------finish rotate-------')
+    return rotated_data

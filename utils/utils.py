@@ -2,6 +2,7 @@ import torch
 from torch.autograd import Variable
 import torch.nn as nn
 import numpy as np
+import nibabel as nib
 import SimpleITK as sitk
 
 
@@ -149,11 +150,38 @@ def crop_with_box(image, index_min, index_max):
 
     return img[np.ix_(range(index_min[0], index_max[0]), range(index_min[1], index_max[1]), range(index_min[2], index_max[2]))]
 
+
 def out_precessing(label):
     tmp = np.asarray(label)
     if (tmp==4).sum() <= 500:
         tmp = (tmp == 4)*1 + (tmp == 1)*1 + (tmp==2)*2 + (tmp==3)*3
     return tmp
+
+
+def load_nii_to_array(path):
+    """
+        将.nii格式加载成图像数据。
+    """
+    image = nib.load(path)
+    image = image.get_data()
+
+    image = np.transpose(image, [2, 1, 0])
+    # image = np.array(image) ###
+    return image
+
+
+def rotation(image, theta, c=np.array([])):
+    theta = -np.pi * theta / 180
+    if c.size == 0:
+        c = np.array([(image.shape[0]-1)//2, (image.shape[1]-1)//2, (image.shape[2]-1)//2])
+
+    mean = np.mean(image)
+    new_image = np.zeros(image.shape)
+    print(new_image.shape)
+
+    # x rotation
+
+
 
 #
 # image = [[0, 1, 1, 2, 2, 3, 3, 4, 4]]
