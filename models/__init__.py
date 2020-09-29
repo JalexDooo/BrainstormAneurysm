@@ -4,4 +4,4 @@ from .dresnet import RoResNet
 from .tresnet import TriResNet
 from .nresnet_fix1 import NormalResNetFix1
 
-from .gan import GenerativeGAN, CriminatorGAN
+from .gan import GenerativeGAN, DiscriminatorGAN

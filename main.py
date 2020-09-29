@@ -72,7 +72,6 @@ def multi_train_random(**kwargs):
 	print('criterion and optimizer is finished.')
 	fig_loss = []
 	fig_dice = []
-<<<<<<< HEAD
 
 	for kkepoch in range(opt.random_epoch):
 		print('----------------------kkepoch %d--------------------' % (kkepoch))
@@ -80,11 +79,6 @@ def multi_train_random(**kwargs):
 		criterion = nn.CrossEntropyLoss()
 		optimizer = optim.Adam(params=model.parameters(), lr=lr, betas=(0.9, 0.999))
 		lr *= opt.lr_decay
-=======
-	lr = opt.lr
-	for epoch in range(opt.max_epoch):
-		print('----------------------epoch %d--------------------' % (epoch))
->>>>>>> 04555ae19b35fd22d3a3d0df2711d90c6248074d
 
 		# pytorch数据处理
 		train_data = BraTS_Random(opt.train_root_path, opt.val_root_path, is_train=True, task=opt.task)
@@ -94,17 +88,6 @@ def multi_train_random(**kwargs):
 		# test_dataloader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
 		print('train and test dataloader load finished.')
 
-<<<<<<< HEAD
-=======
-		criterion = nn.CrossEntropyLoss()
-		print('lr: ', opt.lr)
-		optimizer = optim.Adam(params=model.parameters(), lr=lr, betas=(0.9, 0.999))
-		lr *= opt.lr_decay
-
-		print('criterion and optimizer is finished.')
-		# print(model.eval())
-
->>>>>>> 04555ae19b35fd22d3a3d0df2711d90c6248074d
 		train_loss = []
 		train_dice = []
 		model.train()
@@ -264,7 +247,6 @@ def multi_val_random(**kwargs):
 
 def test():
 	lr = opt.lr
-<<<<<<< HEAD
 	for _ in range(100):
 		print(lr)
 		lr *= opt.lr_decay
@@ -272,12 +254,54 @@ def test():
 
 def test_():
 	print('hello world')
-=======
-	lr_decay = 0.99
-	for i in range(80):
-		print(i, ' --> ', lr)
-		lr *= lr_decay
->>>>>>> 04555ae19b35fd22d3a3d0df2711d90c6248074d
+
+def gan_test():
+	from torchvision import datasets
+	from torchvision import transforms
+	import models.gan as gan
+
+	img_transform = transforms.Compose([
+		transforms.ToTensor(),
+		transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+	])
+	mnist = datasets.MNIST(
+		root='./MNIST/', train=True, transform=img_transform, download=True
+	)
+	dataloader = torch.utils.data.DataLoader(dataset=mnist, batch_size=128, shuffle=True)
+
+	discriminator = gan.DiscriminatorGAN()
+	generator = gan.GenerativeGAN()
+
+	criterion = nn.BCELoss()
+	d_optim = optim.Adam(discriminator.parameters(), lr=0.0003)
+	g_optim = optim.Adam(generator.parameters(), lr=0.0003)
+
+
+	for epoch in range(1):
+		for i, (img, _) in enumerate(dataloader):
+			num_img = img.size(0)
+			# train discriminator
+			img = img.view(num_img, -1)
+			real_img = Variable(img)
+			real_label = Variable(t.ones(num_img))
+			fake_label = Variable(t.zeros(num_img))
+
+			real_out = discriminator(real_img)
+			d_loss_real = criterion(real_out, real_label)
+			real_scores = real_out
+
+			z = Variable(t.randn(num_img, 100))
+			fake_img = generator(z)
+			fake_out = discriminator(fake_img)
+			d_loss_fake = criterion(fake_out, fake_label)
+			fake_scores = fake_out
+
+			d_loss = d_loss_real + d_loss_fake
+			d_optim.zero_grad()
+			d_loss.backward()
+			d_optim.step()
+
+			
 
 
 if __name__ == '__main__':

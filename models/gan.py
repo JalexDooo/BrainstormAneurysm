@@ -2,7 +2,7 @@ import torch as t
 import torch.nn as nn
 
 
-class CriminatorGAN(nn.Module):
+class DiscriminatorGAN(nn.Module):
     """MINIST Testing code.
 
     Criminator Network
