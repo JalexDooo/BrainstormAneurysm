@@ -262,26 +262,28 @@ def gan_test():
 
 	img_transform = transforms.Compose([
 		transforms.ToTensor(),
+		transforms.Lambda(lambda x: x.repeat(3, 1, 1)),
 		transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
 	])
 	mnist = datasets.MNIST(
 		root='./MNIST/', train=True, transform=img_transform, download=False
 	)
+	
 	dataloader = torch.utils.data.DataLoader(dataset=mnist, batch_size=128, shuffle=True)
 
+	print('mnist[0].shape: ', mnist)
 	discriminator = gan.DiscriminatorGAN()
 	generator = gan.GenerativeGAN()
 
 	criterion = nn.BCELoss()
 	d_optim = optim.Adam(discriminator.parameters(), lr=0.0003)
 	g_optim = optim.Adam(generator.parameters(), lr=0.0003)
-
-
-	for epoch in range(1):
+	num_epoch = 10
+	for epoch in range(num_epoch):
 		for i, (img, _) in enumerate(dataloader):
 			print('img.shape: ', img.shape)
 			num_img = img.size(0)
-			
+			print('num_img: ', num_img)
 			# train discriminator
 			img = img.view(num_img, -1)
 			real_img = Variable(img)

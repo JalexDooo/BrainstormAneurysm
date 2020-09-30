@@ -10,7 +10,7 @@ class DiscriminatorGAN(nn.Module):
     def __init__(self):
         super(DiscriminatorGAN, self).__init__()
         self.dis = nn.Sequential(
-            nn.Linear(784, 256),
+            nn.Linear(784*3, 256),
             nn.LeakyReLU(0.2),
             nn.Linear(256, 256),
             nn.LeakyReLU(0.2),
@@ -31,7 +31,7 @@ class GenerativeGAN(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(256, 256),
             nn.ReLU(inplace=True),
-            nn.Linear(256, 784),
+            nn.Linear(256, 784*3),
             nn.Tanh()
         )
     
