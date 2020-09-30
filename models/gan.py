@@ -8,7 +8,7 @@ class DiscriminatorGAN(nn.Module):
     Criminator Network
     """
     def __init__(self):
-        super(CriminatorGAN, self).__init__()
+        super(DiscriminatorGAN, self).__init__()
         self.dis = nn.Sequential(
             nn.Linear(784, 256),
             nn.LeakyReLU(0.2),
@@ -24,10 +24,10 @@ class DiscriminatorGAN(nn.Module):
 
 
 class GenerativeGAN(nn.Module):
-    def __init__(self, input_data):
+    def __init__(self):
         super(GenerativeGAN, self).__init__()
         self.gen = nn.Sequential(
-            nn.Linear(input_data, 256),
+            nn.Linear(100, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, 256),
             nn.ReLU(inplace=True),

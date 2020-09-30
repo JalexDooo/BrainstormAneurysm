@@ -265,7 +265,7 @@ def gan_test():
 		transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
 	])
 	mnist = datasets.MNIST(
-		root='./MNIST/', train=True, transform=img_transform, download=True
+		root='./MNIST/', train=True, transform=img_transform, download=False
 	)
 	dataloader = torch.utils.data.DataLoader(dataset=mnist, batch_size=128, shuffle=True)
 
@@ -279,7 +279,9 @@ def gan_test():
 
 	for epoch in range(1):
 		for i, (img, _) in enumerate(dataloader):
+			print('img.shape: ', img.shape)
 			num_img = img.size(0)
+			
 			# train discriminator
 			img = img.view(num_img, -1)
 			real_img = Variable(img)
@@ -301,7 +303,23 @@ def gan_test():
 			d_loss.backward()
 			d_optim.step()
 
+			# train denerator
+			z = Variable(t.randn(num_img, 100))
+			fake_img = generator(z)
+			output = discriminator(fake_img)
+			g_loss = criterion(output, real_label)
+			g_optim.zero_grad()
+			g_loss.backward()
+			g_optim.step()
+
+			if (i + 1) % 10 == 0:
+				print('Epoch [{}/{}], d_loss: {:.6f}, g_loss: {:.6f} D real: {:.6f}, D fake: {:.6f}'.format(epoch, num_epoch, d_loss.data[0], g_loss.data[0], real_scores.data.mean(), fake_scores.data.mean() ))
 			
+
+
+
+
+
 
 
 if __name__ == '__main__':
