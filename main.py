@@ -262,8 +262,7 @@ def gan_test():
 
 	img_transform = transforms.Compose([
 		transforms.ToTensor(),
-		transforms.Lambda(lambda x: x.repeat(3, 1, 1)),
-		transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+		transforms.Normalize(mean=0.5, std=0.5)
 	])
 	mnist = datasets.MNIST(
 		root='./MNIST/', train=True, transform=img_transform, download=False
@@ -305,7 +304,7 @@ def gan_test():
 			d_loss.backward()
 			d_optim.step()
 
-			# train denerator
+			# train generator
 			z = Variable(t.randn(num_img, 100))
 			fake_img = generator(z)
 			output = discriminator(fake_img)
