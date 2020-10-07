@@ -48,3 +48,40 @@ class DefaultConfig(object):
 
 
 opt = DefaultConfig()
+
+
+class BraTS2020Config(object):
+    model = 'UNet3D'
+
+    is_train = True
+    predict_path = './predict_nibable'
+
+    dataset_train_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
+    dataset_val_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_ValidationData/MICCAI_BraTS2020_ValidationData' 
+
+    training_use_gpu = True
+    training_use_gpu_num = 4
+    training_num_workers = 0
+    training_load_model_path = None
+
+    training_batch_size = 4
+    training_max_epoch = 100
+    training_lr = 0.001
+    training_lr_decay = 0.98
+
+    def _parse(self, kwargs):
+        """
+        update config
+        """
+        for k, v in kwargs.items():
+            if not hasattr(self, k):
+                warnings.warn("Warning: opt has not attribute %s" % k)
+            setattr(self, k, v)
+
+    print('user config:')
+    for k, v in self.__class__.__dict__.items():
+    	if not k.startswith('_'):
+    		print(k, getattr(self, k))
+
+
+config = BraTS2020Config()

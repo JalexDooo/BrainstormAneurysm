@@ -13,6 +13,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset
 import scipy.misc
+from config import config
 
 from .datautils import *
 
@@ -168,3 +169,20 @@ class BraTS_Random(Dataset):
         label_volumn = np.asarray(label_volumn)
 
         return image_volumn, label_volumn
+
+
+class BraTS2020(Dataset):
+    """Redesigned class of BraTS2020 dataset processing. Aim: .nii.gz -> pytorch tensor.
+
+    Data Augumentation Methods:
+        1. Random bias.
+        2. Random reverse.
+        3. No random slicing. Batchsize sets 1. Using group normalization in model.
+
+    """
+    def __init__(self, config):
+        self.train_path = config.dataset_train_path
+        self.val_path = config.dataset_val_path
+        self.is_train = config.is_train
+        
+
