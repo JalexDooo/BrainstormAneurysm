@@ -184,5 +184,58 @@ class BraTS2020(Dataset):
         self.train_path = config.dataset_train_path
         self.val_path = config.dataset_val_path
         self.is_train = config.is_train
+        self.image_box = [144, 192, 192]
+
+        if self.is_train:
+            self.path_list = load_hgg_lgg_files(self.train_path)
+        else:
+            self.path_list = load_nii_to_array(self.val_path)
+
+    def __len__(self):
+        return len(self.path_list)
+    
+    def __getitem__(self, idx):
+        path = self.path_list[idx]
+
+        if self.is_train:
+            return idx
+        return idx
+
+    def _read_image(self, path):
+        image = []
+        label = []
+        image_t, label_t = make_image_label(path)
+        flair, t1, t1ce, t2 = image_t
+        seg = label_t
+
+        # 按照flair确定裁剪区域
+        box_min, box_max = get_box(flair, 0)
+        index_min, index_max = make_box(flair, box_min, box_max, self.image_box)
+
+        # 裁剪
+        flair = crop_with_box(flair, index_min, index_max)
+        t1 = crop_with_box(t1, index_min, index_max)
+        t1ce = crop_with_box(t1ce, index_min, index_max)
+        t2 = crop_with_box(t2, index_min, index_max)
+        if self.is_train:
+            seg = crop_with_box(seg, index_min, index_max)
+
+        flair = random_bias(flair)
         
 
+        # 标准化
+        flair = normalization(flair)
+        t1 = normalization(t1)
+        t1ce = normalization(t1ce)
+        t2 = normalization(t2)
+
+        label = label_processing(seg)
+        image.append(flair)
+        image.append(t1)
+        image.append(t1ce)
+        image.append(t2)
+
+        image = np.asarray(image)
+        label = np.asarray(label)
+
+        return image, label, index_min, index_max

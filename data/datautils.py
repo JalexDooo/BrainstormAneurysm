@@ -19,7 +19,7 @@ def load_hgg_lgg_files(path):
     """
         加载HGG和LGG所有文件，以每个文件夹作为一个训练数据自己。
     """
-    return glob.glob(path + '/*')
+    return glob.glob(path + '/BraTS*')
 
 
 def load_val_file(path):
@@ -219,3 +219,13 @@ def rotate_image(image):
 
     print('--------finish rotate-------')
     return rotated_data
+
+def label_processing(label):
+    """make label of 4 3.
+    """
+    return (label==1)*1.0 + (label==2)*2.0 + (label==4)*3.0
+
+def random_bias(image):
+    std = image.std()
+    print(std)
+    return image

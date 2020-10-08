@@ -32,7 +32,7 @@ warnings.filterwarnings('ignore')
 import models
 from utils.utils import *
 
-from config import opt
+from config import opt, config
 
 
 def data_test():
@@ -245,15 +245,37 @@ def multi_val_random(**kwargs):
 # 	plt.show()
 # 	plt.savefig("accuracy_loss.jpg")
 
-def test():
-	lr = opt.lr
-	for _ in range(100):
-		print(lr)
-		lr *= opt.lr_decay
+def test(**kwargs):
+	config._parse(kwargs)
+	# if config.training_use_gpu and not t.cuda.is_available():
+	# 	print('Using GPU, but cuda is not available!!')
+	# 	return
+	
+	model = getattr(models, config.model)()
+	if config.training_use_gpu:
+		gpu_devices = [i for i in range(config.training_use_gpu_num)]
+		print(gpu_devices)
 
 
-def test_():
-	print('hello world')
+def train(**kwargs):
+	# config modified.
+	config._parse(kwargs)
+	if config.training_use_gpu and not t.cuda.is_available():
+		print('Using GPU, but cuda is not available!!')
+		return
+	
+	# get model from models.__init__.py and model for gpu parallel.
+	model = getattr(models, config.model)()
+	if config.training_use_gpu:
+		gpu_devices = [i for i in range(config.training_use_gpu_num)]
+		model = nn.DataParallel(model)
+		model = model.cuda(device=gpu_devices[0])
+	
+	# loading pretrained model.
+	if config.training_load_model_path:
+		if not os.path.exists(config.training_load_model_path):
+			os.mkdir(config.training_load_model_path)			
+		
 
 def gan_test():
 	from torchvision import datasets
@@ -316,11 +338,6 @@ def gan_test():
 			if (i + 1) % 10 == 0:
 				print('Epoch [{}/{}], d_loss: {:.6f}, g_loss: {:.6f} D real: {:.6f}, D fake: {:.6f}'.format(epoch, num_epoch, d_loss.data[0], g_loss.data[0], real_scores.data.mean(), fake_scores.data.mean() ))
 			
-
-
-
-
-
 
 
 if __name__ == '__main__':

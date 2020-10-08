@@ -51,7 +51,7 @@ opt = DefaultConfig()
 
 
 class BraTS2020Config(object):
-    model = 'UNet3D'
+    model = 'NormalResNet'
 
     is_train = True
     predict_path = './predict_nibable'
@@ -78,10 +78,10 @@ class BraTS2020Config(object):
                 warnings.warn("Warning: opt has not attribute %s" % k)
             setattr(self, k, v)
 
-    print('user config:')
-    for k, v in self.__class__.__dict__.items():
-    	if not k.startswith('_'):
-    		print(k, getattr(self, k))
+    # print('user config:')
+    # for k, v in self.__class__.__dict__.items():
+    # 	if not k.startswith('_'):
+    # 		print(k, getattr(self, k))
 
 
 config = BraTS2020Config()
