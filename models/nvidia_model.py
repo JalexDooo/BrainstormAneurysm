@@ -81,6 +81,36 @@ class BackboneDownSampling(nn.Module):
         return x
 
 
+class LinearUpSampling(nn.Module):
+    def __init__(self, input_data, output_data, scale_factor=2, mode='trilinear', align_corners=True):
+        super(LinearUpSampling, self).__init__()        
+        self.scale_factor = scale_factor
+        self.mode = mode
+        self.align_corners = align_corners
+        self.conv1 = nn.Conv3d(in_channels=input_data, out_channels=output_data, kernel_size=1)
+        self.conv2 = nn.Conv3d(in_channels=input_data, out_channels=output_data, kernel_size=1)
+    
+    def forward(self, x, skipx=None):
+        x = self.conv1(x)
+        x = nn.functional.interpolate(x, scale_factor=self.scale_factor, mode=self.mode, align_corners=self.align_corners)
+
+        if skipx is not None:
+            x = t.cat((x, skipx), 1)
+            x = self.conv2(x)
+        
+        return x
+
+
+class OutputTransition(nn.Module):
+    def __init__(self, input_data, output_data):
+        super(OutputTransition, self).__init__()
+        self.conv1 = nn.Conv3d(in_channels=input_data, out_channels=output_data, kernel_size=1)
+        self.actv1 = t.sigmoid
+    
+    def forward(self, x):
+        return self.actv1(self.conv1(x))
+
+
 class VDResampling(nn.Module):
     def __init__(self, input_data=256, output_data=256, dense_features=(10, 12, 8), stride=2, kernel_size=3, padding=1, activation="relu", normalization="group"):
         super(VDResampling, self).__init__()        
@@ -127,4 +157,128 @@ class VDResampling(nn.Module):
 
 
 def VDraw(x):
+    """Generate a Gaussian distribution with the given mean(128-d) and std(128-d)"""
     return t.distributions.Normal(x[:, :128], x[:, 128:]).sample()
+
+
+class VAEDecoderBlock(nn.Module):
+    def __init__(self, input_data, output_data, activation='relu', normalization='group', mode='trilinear'):
+        super(VAEDecoderBlock, self).__init__()
+        self.up0 = LinearUpSampling(input_data, output_data, mode=mode)
+        self.block = BackboneDecoderBlock(output_data, output_data, activation=activation, normalization=normalization)
+    
+    def forward(self, x):
+        x = self.up0(x)
+        x = self.block(x)
+
+        return x
+
+
+class VAE(nn.Module):
+    def __init__(self, input_data=256, output_data=4, dense_features=(10, 12, 8), activation='relu', normalization='group', mode='trilinear'):
+        super(VAE, self).__init__()
+
+        self.vd_resample = VDResampling(input_data, input_data, dense_features)
+        self.vd_block2 = VAEDecoderBlock(input_data, input_data//2)
+        self.vd_block1 = VAEDecoderBlock(input_data//2, input_data//4)
+        self.vd_block0 = VAEDecoderBlock(input_data//4, input_data//8)
+        self.vd_end = nn.Conv3d(input_data//8, output_data, kernel_size=1)
+    
+    def forward(self, x):
+        x, distr = self.vd_resample(x)
+        x = self.vd_block2(x)
+        x = self.vd_block1(x)
+        x = self.vd_block0(x)
+        x = self.vd_end(x)
+
+        return x, distr
+
+
+class NvNet(nn.Module):
+    def __init__(self, input_data=4, output_data=4, activation='rrelu', normalization='group', mode='trilinear', vae_flag=True):
+        super(NvNet, self).__init__()
+        shape = [144, 192, 144]
+        self.vae_flag = vae_flag
+
+        # encoder blocks
+        self.encode1 = nn.Sequential(
+            BackboneDownSampling(input_data, 32, 1, dropout_rate=0.2),
+            BackboneEncoderBlock(32, 32, activation=activation, normalization=normalization)
+        )
+
+        self.encode2 = nn.Sequential(
+            BackboneDownSampling(32, 64),
+            BackboneEncoderBlock(64, 64, activation=activation, normalization=normalization),
+            BackboneEncoderBlock(64, 64, activation=activation, normalization=normalization)
+        )
+
+        self.encode3 = nn.Sequential(
+            BackboneDownSampling(64, 128),
+            BackboneEncoderBlock(128, 128, activation=activation, normalization=normalization),
+            BackboneEncoderBlock(128, 128, activation=activation, normalization=normalization)
+        )
+        
+        self.encode4 = nn.Sequential(
+            BackboneDownSampling(128, 256),
+            BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization),
+            BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization),
+            BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization),
+            BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
+        )
+
+        # decoder blocks
+        self.de_up2 = LinearUpSampling(256, 128, mode=mode)
+        self.de_block2 = BackboneDecoderBlock(128, 128, activation=activation, normalization=normalization)
+        self.de_up1 = LinearUpSampling(128, 64, mode=mode)
+        self.de_block1 = BackboneDecoderBlock(64, 64, activation=activation, normalization=normalization)
+        self.de_up0 = LinearUpSampling(64, 32, mode=mode)
+        self.de_block0 = BackboneDecoderBlock(32, 32, activation=activation, normalization=normalization)
+
+
+        self.decode_out = OutputTransition(32, output_data)
+
+        # VAE encoder
+        if self.vae_flag:
+            self.dense_features = (shape[0]//16, shape[1]//16, shape[2]//16)
+            self.vae = VAE(256, input_data, dense_features=self.dense_features)
+
+    def forward(self, x):
+        x1 = self.encode1(x)
+        x2 = self.encode2(x1)
+        x3 = self.encode3(x2)
+        x4 = self.encode4(x3)
+
+        # print('x3.shape: {}, x4.shape: {}'.format(x3.shape, x4.shape))
+        # x3.shape: torch.Size([1, 256, 18, 24, 18]), x4.shape: torch.Size([1, 256, 18, 24, 18])
+
+        x3 = self.de_up2(x4, x3)
+        x3 = self.de_block2(x3)
+
+        x2 = self.de_up1(x3, x2)
+        x2 = self.de_block1(x2)
+
+        x1 = self.de_up0(x2, x1)
+        x1 = self.de_block0(x1)
+
+        x = self.decode_out(x1)
+
+        if self.vae_flag:
+            vae, distr = self.vae(x4)
+            x = t.cat((x, vae), 1)
+            return x, distr
+
+        return x
+
+        # self.en_block0 = BackboneEncoderBlock(32, 32, activation=activation, normalization=normalization)
+        # self.en_down0 = BackboneDownSampling(32, 64)
+        # self.en_block1_0 = BackboneEncoderBlock(64, 64, activation=activation, normalization=normalization)
+        # self.en_block1_1 = BackboneEncoderBlock(64, 64, activation=activation, normalization=normalization)
+        # self.en_down1 = BackboneDownSampling(64, 128)
+        # self.en_block2_0 = BackboneEncoderBlock(128, 128, activation=activation, normalization=normalization)
+        # self.en_block2_1 = BackboneEncoderBlock(128, 128, activation=activation, normalization=normalization)
+        # self.en_down2 = BackboneDownSampling(128, 256)
+        # self.en_block3_0 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
+        # self.en_block3_1 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
+        # self.en_block3_2 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
+        # self.en_block3_3 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
+

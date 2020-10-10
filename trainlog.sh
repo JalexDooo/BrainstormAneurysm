@@ -22,5 +22,8 @@
 #cd /home/sunjindong/BrainstormBraTS2020 && python main.py multi_train_random --task='Random' --model='NormalResNetFix1' --random_epoch=100 --batch_size=8
 #cd /home/sunjindong/BrainstormBraTS2020 && python main.py multi_val_random --task='Random' --model='NormalResNetFix1' --max_epoch=1 --batch_size=1 --load_model_path='task_Random__final_epoch.pth' --predict_nibable_path='./brats2020val_NormalResNetFix1_random/'
 
-#cd /home/sunjindong/BrainstormBraTS2020 && python main.py multi_train_random --task='Random' --model='NormalResNet' --random_epoch=150 --batch_size=8 --lr=0.0005 --load_model_path='task_Random__final_epoch.pth'
-cd /home/sunjindong/BrainstormBraTS2020 && python main.py multi_val_random --task='Random' --model='NormalResNet' --max_epoch=1 --batch_size=1 --load_model_path='task_Random__final_epoch.pth' --predict_nibable_path='./brats2020test_NormalResNet_random/' --val_root_path='/home/sunjindong/dataset/BraTS_TestData_JSun_paper31/MICCAI_BraTS2020_TestingData'
+# cd /home/sunjindong/BrainstormBraTS2020 && python main.py multi_train_random --task='Random' --model='NormalResNet' --random_epoch=150 --batch_size=8 --lr=0.0005 --load_model_path='task_Random__final_epoch.pth'
+# cd /home/sunjindong/BrainstormBraTS2020 && python main.py multi_val_random --task='Random' --model='NormalResNet' --max_epoch=1 --batch_size=1 --load_model_path='task_Random__final_epoch.pth' --predict_nibable_path='./brats2020test_NormalResNet_random/' --val_root_path='/home/sunjindong/dataset/BraTS_TestData_JSun_paper31/MICCAI_BraTS2020_TestingData'
+
+# Redesigned code for training.
+cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NvNet' --training_use_gpu_num=1

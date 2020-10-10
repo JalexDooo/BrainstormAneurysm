@@ -184,7 +184,7 @@ class BraTS2020(Dataset):
         self.train_path = config.dataset_train_path
         self.val_path = config.dataset_val_path
         self.is_train = config.is_train
-        self.image_box = [144, 192, 192]
+        self.image_box = [144, 192, 144]
 
         if self.is_train:
             self.path_list = load_hgg_lgg_files(self.train_path)
@@ -197,9 +197,15 @@ class BraTS2020(Dataset):
     def __getitem__(self, idx):
         path = self.path_list[idx]
 
+        image, label, box_min, box_max = self._read_image(path)
         if self.is_train:
-            return idx
-        return idx
+            image = torch.from_numpy(image).float()
+            label = torch.from_numpy(label).float()
+            return image, label
+        else:
+            image = torch.from_numpy(image).float()
+            name = path.split('/')[-1]
+            return image, name, box_min, box_max
 
     def _read_image(self, path):
         image = []
@@ -220,8 +226,17 @@ class BraTS2020(Dataset):
         if self.is_train:
             seg = crop_with_box(seg, index_min, index_max)
 
+        # 随机强度偏移
         flair = random_bias(flair)
-        
+        t1 = random_bias(t1)
+        t1c1 = random_bias(t1ce)
+        t2 = random_bias(t2)
+
+        # 随机镜像反转
+        flair = random_reverse(flair)
+        t1 = random_reverse(t1)
+        t1ce = random_reverse(t1ce)
+        t2 = random_reverse(t2)
 
         # 标准化
         flair = normalization(flair)

@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import random
 import numpy as np
 import pandas as pd
 import nibabel as nib
@@ -227,5 +228,19 @@ def label_processing(label):
 
 def random_bias(image):
     std = image.std()
-    print(std)
+    rand_bias = random.uniform(-0.1*std/2, 0.1*std/2)
+    image = (image > 0)*image + int(rand_bias)
+    return image
+
+def random_reverse(image):
+    d1 = random.choice([True, False])
+    d2 = random.choice([True, False])
+    d3 = random.choice([True, False])
+    if d1:
+        image = image[::-1, :, :]
+    if d2:
+        image = image[:, ::-1, :]
+    if d3:
+        image = image[:, :, ::-1]
+    
     return image
