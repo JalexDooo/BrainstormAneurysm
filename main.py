@@ -298,8 +298,8 @@ def train(**kwargs):
 		for ii, (image, label) in enumerate(train_dataloader):
 			for kk in range(2):
 				if config.training_use_gpu:
-					image = image[:, :, :, k*96:(k+1)*96, :].cuda()
-					label = label[:, :, k*96:(k+1)*96, :].cuda()
+					image = image[:, :, :, kk*96:(kk+1)*96, :].cuda()
+					label = label[:, :, kk*96:(kk+1)*96, :].cuda()
 				optimizer.zero_grad()
 				predict, distr = model(image)
 				losses = criterion(predict, label)
