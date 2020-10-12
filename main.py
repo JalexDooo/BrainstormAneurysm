@@ -264,7 +264,10 @@ def train(**kwargs):
 		raise BaseException('Using GPU, but cuda is not available!!')
 	
 	# get model from models.__init__.py and model for gpu parallel.
-	model = getattr(models, config.model)()
+	if config.model == 'NvNet':
+		model = getattr(models, config.model)(vae_flag=config.model_vae_flag, shape=config.model_input_shape)
+	else:
+		model = getattr(models, config.model)()
 	if config.model_vae_flag:
 		criterion = CombinedLoss(0.1, 0.1)
 	else:
@@ -275,45 +278,61 @@ def train(**kwargs):
 		model = nn.DataParallel(model)
 		model = model.cuda(device=gpu_devices[0])
 		criterion = criterion.cuda()
-	
+
 	# model save dir.
 	model_save_dir = 'ckpt_' + config.model + '_' + config.description + '/'
 	if not os.path.exists(model_save_dir):
 		os.mkdir(model_save_dir)
-	
+
 	# loading pretrained model.
 	if config.training_load_model:
 		if not os.path.exists(model_save_dir+config.training_load_model):
 			raise BaseException('The loaded model is not exists.')
 		model.load_state_dict(t.load('./' + model_save_dir + config.training_load_model))
 		print('load model -> {}'.format(config.training_load_model))
-	
+
 	optimizer = optim.Adam(params=model.parameters(), lr=config.training_lr)
-	scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=10, verbose=True)
-	
+	scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=20*369, verbose=True)
+
+	model.train()
 	for epoch in range(config.training_max_epoch):
 		train_dataset = BraTS2020(config)
 		train_dataloader = DataLoader(train_dataset, batch_size=config.training_batch_size, shuffle=True, num_workers=config.training_num_workers)
 
 		for ii, (image, label) in enumerate(train_dataloader):
-			for kk in range(2):
+			train_loss = []
+			for kk in range((config.model_input_shape[-1] // config.dataset_random_width) * 2):
+				# print('kkkkkkk: {}'.format(kk))
+				# print('image.shape: {}, label.shape: {}'.format(image.shape, label.shape))
 				if config.training_use_gpu:
-					image = image[:, :, :, kk*96:(kk+1)*96, :].cuda()
-					label = label[:, :, kk*96:(kk+1)*96, :].cuda()
+					_image = image[:, kk, :, :, :, :].cuda()
+					_label = label[:, kk, :, :, :, :].cuda()
+				else:
+					_image = image[:, kk, :, :, :, :].cuda()
+					_label = label[:, kk, :, :, :, :].cuda()
+
 				optimizer.zero_grad()
-				predict, distr = model(image)
-				losses = criterion(predict, label)
+				if config.model_vae_flag:
+					predict, distr = model(_image)
+					losses = criterion(predict, _label, distr)
+					print('distr.shape: {}'.format(distr.shape))
+				else:
+					predict = model(_image)
+					# print('predict.shape: {}, _label.shape: {}'.format(predict.shape, _label.shape))
+					losses = criterion(predict, _label)
+				train_loss.append(float(losses))
 				losses.backward()
 				optimizer.step()
 				scheduler.step(losses)
-				print('image.shape: {}, label.shape: {}'.format(image.shape, label.shape))
-				print('distr.shape: {}'.format(distr.shape))
+				# print('image.shape: {}, label.shape: {}'.format(_image.shape, _label.shape))
 
 				
-				print('training: {}/{}--{} th, lr: {}, '.format(epoch, config.training_max_epoch, ii, optimizer.param_groups[0]['lr']))
-				raise BaseException('My interruption.')
-		
-			
+				print('training: {}/{}--{} th, lr: {}'.format(epoch, config.training_max_epoch, ii, optimizer.param_groups[0]['lr']))
+			print('losses: {:0.6f}'.format(sum(train_loss) / len(train_loss) * 1.0))
+				# raise BaseException('My interruption.')
+		if (epoch+1) % 5 == 0:
+			torch.save(model.state_dict(), os.path.join(model_save_dir, 'epoch_{}.pth'.format(epoch+1)))
+
 
 def gan_test():
 	from torchvision import datasets
@@ -378,9 +397,8 @@ def gan_test():
 
 
 def ttt():
-	a = np.ones((3, 2, 2))
-	a += 1
-	print(a)
+	pi = np.pi
+	print("pi is {:6f}".format(pi))
 
 
 if __name__ == '__main__':

@@ -224,7 +224,13 @@ def rotate_image(image):
 def label_processing(label):
     """make label of 4 3.
     """
-    return (label==1)*1.0 + (label==2)*2.0 + (label==4)*3.0
+    lbl = []
+    lbl.append(label==0)
+    lbl.append(label==1)
+    lbl.append(label==2)
+    lbl.append(label==4)
+    label = np.asarray(lbl)
+    return label
 
 def random_bias(image):
     std = image.std()
@@ -232,10 +238,7 @@ def random_bias(image):
     image = (image > 0)*image + int(rand_bias)
     return image
 
-def random_reverse(image):
-    d1 = random.choice([True, False])
-    d2 = random.choice([True, False])
-    d3 = random.choice([True, False])
+def random_reverse(image, d1, d2, d3):
     if d1:
         image = image[::-1, :, :]
     if d2:

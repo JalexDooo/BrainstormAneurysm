@@ -59,18 +59,20 @@ class BraTS2020Config(object):
 
     dataset_train_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
     dataset_val_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_ValidationData/MICCAI_BraTS2020_ValidationData' 
+    dataset_random_width = 96
 
     training_use_gpu = True
     training_use_gpu_num = 4
     training_num_workers = 0
     training_load_model = None
 
-    training_batch_size = 1
+    training_batch_size = 2
     training_max_epoch = 100
     training_lr = 0.001
     training_lr_decay = 0.9
 
     model_vae_flag = True
+    model_input_shape = [144, 192, 192]
 
     def _parse(self, kwargs):
         """

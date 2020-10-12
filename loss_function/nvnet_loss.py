@@ -11,8 +11,9 @@ class SoftDiceLoss(_Loss):
         super(SoftDiceLoss, self).__init__()
     
     def forward(self, y_pred, y_true, eps=1e-8):
+        # print('y_pred, y_true: {}, {}'.format(y_pred.shape, y_true.shape))
         intersection = t.sum(t.mul(y_pred, y_true))
-        union = t.sum(t.sum(y_pred, y_pred)) + t.sum(t.mul(y_true, y_true)) + eps
+        union = t.sum(t.mul(y_pred, y_pred)) + t.sum(t.mul(y_true, y_true)) + eps
         dice = 2 * intersection / union
         dice_loss = 1-dice
 

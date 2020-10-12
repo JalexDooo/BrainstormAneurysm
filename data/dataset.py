@@ -177,14 +177,16 @@ class BraTS2020(Dataset):
     Data Augumentation Methods:
         1. Random bias.
         2. Random reverse.
-        3. No random slicing. Batchsize sets 1. Using group normalization in model.
+        3. Random slicing. Batchsize sets 1. Using group normalization in model.
 
     """
     def __init__(self, config):
         self.train_path = config.dataset_train_path
         self.val_path = config.dataset_val_path
         self.is_train = config.is_train
-        self.image_box = [144, 192, 144]
+        self.image_box = config.model_input_shape
+        self.random_width = config.dataset_random_width
+        self.times = self.image_box[-1] // self.random_width
 
         if self.is_train:
             self.path_list = load_hgg_lgg_files(self.train_path)
@@ -206,6 +208,25 @@ class BraTS2020(Dataset):
             image = torch.from_numpy(image).float()
             name = path.split('/')[-1]
             return image, name, box_min, box_max
+    
+    def _random_slice(self, image, label):
+        image_volumn = []
+        label_volumn = []
+
+        if self.is_train:
+            for _ in range(self.times*2):
+                idy = np.random.randint(0, image.shape[2] - self.random_width + 1)
+                idz = np.random.randint(0, image.shape[3] - self.random_width + 1)
+                image_volumn.append(image[:, :, idy:idy+self.random_width, idz:idz+self.random_width])
+                label_volumn.append(label[:, :, idy:idy+self.random_width, idz:idz+self.random_width])
+        else:
+            for i in range(self.times):
+                for j in range(self.times):
+                    idy = i * self.random_width
+                    idz = j * self.random_width
+                    image_volumn.append(image[:, :, idy:idy + self.random_width, idz:idz + self.random_width])
+
+        return np.asarray(image_volumn), np.asarray(label_volumn)
 
     def _read_image(self, path):
         image = []
@@ -233,10 +254,15 @@ class BraTS2020(Dataset):
         t2 = random_bias(t2)
 
         # 随机镜像反转
-        flair = random_reverse(flair)
-        t1 = random_reverse(t1)
-        t1ce = random_reverse(t1ce)
-        t2 = random_reverse(t2)
+        d1 = random.choice([True, False])
+        d2 = random.choice([True, False])
+        d3 = random.choice([True, False])
+        flair = random_reverse(flair, d1, d2, d3)
+        t1 = random_reverse(t1, d1, d2, d3)
+        t1ce = random_reverse(t1ce, d1, d2, d3)
+        t2 = random_reverse(t2, d1, d2, d3)
+        if self.is_train:
+            seg = random_reverse(seg, d1, d2, d3)
 
         # 标准化
         flair = normalization(flair)
@@ -252,5 +278,8 @@ class BraTS2020(Dataset):
 
         image = np.asarray(image)
         label = np.asarray(label)
+        # print('dataset-> image.shape: {}, label.shape: {}'.format(image.shape, label.shape))
+        image, label = self._random_slice(image, label)
+        # print('dataset random slice-> image.shape: {}, label.shape: {}'.format(image.shape, label.shape))
 
         return image, label, index_min, index_max

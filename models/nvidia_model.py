@@ -117,6 +117,7 @@ class VDResampling(nn.Module):
 
         midput_data = input_data // 2
         self.dense_features = dense_features
+        # print('self.dense_features: {}'.format(self.dense_features))
         
         self.gn1 = nn.GroupNorm(num_groups=8, num_channels=input_data)
         if activation == 'relu':
@@ -144,7 +145,11 @@ class VDResampling(nn.Module):
         x = self.gn1(x)
         x = self.actv1(x)
         x = self.conv1(x)
+        # print('VDResample: x: {}'.format(x.shape))
         x = x.view(-1, self.num_flat_features(x))
+        # print('VDResample: view x: {}'.format(x.shape))
+        # VDResample: x: torch.Size([1, 16, 9, 6, 9])
+        # VDResample: view x: torch.Size([1, 7776])
         x_vd = self.dense1(x)
         distr = x_vd
         x = VDraw(x_vd)
@@ -185,7 +190,10 @@ class VAE(nn.Module):
         self.vd_end = nn.Conv3d(input_data//8, output_data, kernel_size=1)
     
     def forward(self, x):
+        # print('vd_resample before -> x: {}'.format(x.shape))
+        # vd_resample before -> x: torch.Size([1, 256, 18, 12, 18])
         x, distr = self.vd_resample(x)
+        # print('vd_resample after -> x: {}, distr: {}'.format(x.shape, distr.shape))
         x = self.vd_block2(x)
         x = self.vd_block1(x)
         x = self.vd_block0(x)
@@ -195,9 +203,9 @@ class VAE(nn.Module):
 
 
 class NvNet(nn.Module):
-    def __init__(self, input_data=4, output_data=4, activation='rrelu', normalization='group', mode='trilinear', vae_flag=True):
+    def __init__(self, input_data=4, output_data=4, activation='rrelu', normalization='group', mode='trilinear', vae_flag=True, shape=[144, 96, 144]):
         super(NvNet, self).__init__()
-        shape = [144, 192, 144]
+        self.shape = shape
         self.vae_flag = vae_flag
 
         # encoder blocks
@@ -261,24 +269,12 @@ class NvNet(nn.Module):
         x1 = self.de_block0(x1)
 
         x = self.decode_out(x1)
+        # print('x.shape: {}'.format(x.shape))
 
         if self.vae_flag:
             vae, distr = self.vae(x4)
+            print('vae.shape: {}, distr.shape: {}'.format(vae.shape, distr.shape))
             x = t.cat((x, vae), 1)
             return x, distr
 
         return x
-
-        # self.en_block0 = BackboneEncoderBlock(32, 32, activation=activation, normalization=normalization)
-        # self.en_down0 = BackboneDownSampling(32, 64)
-        # self.en_block1_0 = BackboneEncoderBlock(64, 64, activation=activation, normalization=normalization)
-        # self.en_block1_1 = BackboneEncoderBlock(64, 64, activation=activation, normalization=normalization)
-        # self.en_down1 = BackboneDownSampling(64, 128)
-        # self.en_block2_0 = BackboneEncoderBlock(128, 128, activation=activation, normalization=normalization)
-        # self.en_block2_1 = BackboneEncoderBlock(128, 128, activation=activation, normalization=normalization)
-        # self.en_down2 = BackboneDownSampling(128, 256)
-        # self.en_block3_0 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
-        # self.en_block3_1 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
-        # self.en_block3_2 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
-        # self.en_block3_3 = BackboneEncoderBlock(256, 256, activation=activation, normalization=normalization)
-
