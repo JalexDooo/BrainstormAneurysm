@@ -4,6 +4,7 @@ import torch.nn as nn
 import numpy as np
 import nibabel as nib
 import SimpleITK as sitk
+import matplotlib.pyplot as plt
 
 
 def netSize(net):
@@ -153,6 +154,9 @@ def crop_with_box(image, index_min, index_max):
 
 def out_precessing(label):
     tmp = np.asarray(label)
+
+    print('label is 0: {}, label is 1: {}, label is 2: {}, label is 3: {}, label is 4: {}'.format((label==0).sum(), (label==1).sum(), (label==2).sum(), (label==3).sum(), (label==4).sum()))
+
     if (tmp==4).sum() <= 500:
         tmp = (tmp == 4)*1 + (tmp == 1)*1 + (tmp==2)*2 + (tmp==3)*3
     return tmp
@@ -182,7 +186,63 @@ def rotation(image, theta, c=np.array([])):
     # x rotation
 
 
+def figure_multi_array(arrays, labels, save_path, xlabel=None, ylabel=None, title=None):
+    """ figure of array.
 
-#
-# image = [[0, 1, 1, 2, 2, 3, 3, 4, 4]]
-# print(out_precessing(image))
+    ``array: [n, [arr]]`` and arr has the same size.
+
+    n max is 8
+
+    Or color=(0.3,0.3,0.4) ...
+
+    b               蓝色  
+    g               绿色
+    r               红色  
+    y               黄色
+    c               青色
+    k               黑色   
+    m               洋红色 
+    w               白色
+    """
+    arr_idx = len(arrays)
+
+    if arr_idx > 8:
+        raise Exception('Figures number is too large. It should be equal or less than 8.')
+
+    colors = ['b', 'g', 'r', 'y', 'c', 'k', 'm', 'w']
+    plt.figure()
+    for idx in range(arr_idx):
+        array = arrays[idx]
+        color = colors[idx]
+        x = range(0, len(array))
+        y = array
+        print(labels[idx])
+        plt.plot(x, y, '-', color=color, label=labels[idx])
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.legend()
+    plt.savefig(save_path)
+
+
+def sigmoid_deal(image):
+    """ sigmoid processing.
+
+    Args:
+        image.shape: [bz, 4, 144, 96, 96]
+    
+    return:
+        image with shape: [bz, 144, 96, 96]
+
+    """
+    image = image > 0.5
+    # if intersactive
+    image = (image[:, 0, ...]==True)*0 + \
+            (image[:, 3, ...]==False)*(image[:, 2, ...]==False)*(image[:, 1, ...]==True)*1 + \
+            (image[:, 3, ...]==False)*(image[:, 2, ...]==True)*2 + \
+            (image[:, 3, ...]==True)*4
+    image = image.int()
+
+    # print('<function> sigmoid_deal: \nimage.shape: {}, image_debug: {}'.format(image.shape, image[0, :, :, :]))
+
+    return image

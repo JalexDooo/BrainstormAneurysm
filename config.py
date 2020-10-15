@@ -55,6 +55,7 @@ class BraTS2020Config(object):
 
     is_train = True
     predict_path = './predict_nibable'
+    predict_figure = './figure'
     description = ''
 
     dataset_train_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
@@ -70,6 +71,14 @@ class BraTS2020Config(object):
     training_max_epoch = 100
     training_lr = 0.001
     training_lr_decay = 0.9
+
+    val_use_gpu = True
+    val_use_gpu_num = 1
+    val_num_workers = 0
+    val_load_model = None
+
+    val_batch_size = 1
+    val_max_epoch = 1
 
     model_vae_flag = True
     model_input_shape = [144, 192, 192]

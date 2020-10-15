@@ -191,7 +191,7 @@ class BraTS2020(Dataset):
         if self.is_train:
             self.path_list = load_hgg_lgg_files(self.train_path)
         else:
-            self.path_list = load_nii_to_array(self.val_path)
+            self.path_list = load_hgg_lgg_files(self.val_path)
 
     def __len__(self):
         return len(self.path_list)
@@ -246,23 +246,23 @@ class BraTS2020(Dataset):
         t2 = crop_with_box(t2, index_min, index_max)
         if self.is_train:
             seg = crop_with_box(seg, index_min, index_max)
+            # 随机强度偏移
+            flair = random_bias(flair)
+            t1 = random_bias(t1)
+            t1c1 = random_bias(t1ce)
+            t2 = random_bias(t2)
 
-        # 随机强度偏移
-        flair = random_bias(flair)
-        t1 = random_bias(t1)
-        t1c1 = random_bias(t1ce)
-        t2 = random_bias(t2)
-
-        # 随机镜像反转
-        d1 = random.choice([True, False])
-        d2 = random.choice([True, False])
-        d3 = random.choice([True, False])
-        flair = random_reverse(flair, d1, d2, d3)
-        t1 = random_reverse(t1, d1, d2, d3)
-        t1ce = random_reverse(t1ce, d1, d2, d3)
-        t2 = random_reverse(t2, d1, d2, d3)
-        if self.is_train:
+            # 随机镜像反转
+            d1 = random.choice([True, False])
+            d2 = random.choice([True, False])
+            d3 = random.choice([True, False])
+            flair = random_reverse(flair, d1, d2, d3)
+            t1 = random_reverse(t1, d1, d2, d3)
+            t1ce = random_reverse(t1ce, d1, d2, d3)
+            t2 = random_reverse(t2, d1, d2, d3)
             seg = random_reverse(seg, d1, d2, d3)
+
+            label = label_processing(seg)
 
         # 标准化
         flair = normalization(flair)
@@ -270,7 +270,6 @@ class BraTS2020(Dataset):
         t1ce = normalization(t1ce)
         t2 = normalization(t2)
 
-        label = label_processing(seg)
         image.append(flair)
         image.append(t1)
         image.append(t1ce)

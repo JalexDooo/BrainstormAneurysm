@@ -27,4 +27,9 @@
 
 # Redesigned code for training.
 # cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NvNet' --training_use_gpu_num=2 --training_batch_size=2 --model_vae_flag=False
-cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NvNet' --training_use_gpu_num=8 --training_batch_size=8 --model_vae_flag=False
+# cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NvNet' --training_use_gpu_num=8 --training_batch_size=8 --model_vae_flag=False
+
+
+# Redesigned code for validation.
+cd /home/sunjindong/BrainstormBraTS2020 && python main.py val --model='NvNet' --training_use_gpu_num=1 --training_batch_size=1 --model_vae_flag=False --val_load_model='epoch_100.pth' --predict_path='./NvNet_Validation/'
+
