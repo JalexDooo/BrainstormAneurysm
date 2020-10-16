@@ -226,7 +226,7 @@ def figure_multi_array(arrays, labels, save_path, xlabel=None, ylabel=None, titl
 
 
 def sigmoid_deal(image):
-    """ sigmoid processing.
+    """ sigmoid processing for onehot decoding.
 
     Args:
         image.shape: [bz, 4, 144, 96, 96]
@@ -235,14 +235,21 @@ def sigmoid_deal(image):
         image with shape: [bz, 144, 96, 96]
 
     """
+    print('image.shape: {}'.format(image.shape))
+    
     image = image > 0.5
     # if intersactive
-    image = (image[:, 0, ...]==True)*0 + \
-            (image[:, 3, ...]==False)*(image[:, 2, ...]==False)*(image[:, 1, ...]==True)*1 + \
-            (image[:, 3, ...]==False)*(image[:, 2, ...]==True)*2 + \
-            (image[:, 3, ...]==True)*4
-    image = image.int()
+    label0 = ((image[:, 0, ...]==1)).int()*0
+    label1 = ((image[:, 3, ...]==0)*(image[:, 2, ...]==0)*(image[:, 1, ...]==1)).int()*1
+    label2 = ((image[:, 3, ...]==0)*(image[:, 2, ...]==1)).int()*2 
+    label4 = ((image[:, 3, ...]==1)).int()*4.0
 
+    print('label0: {}, label1: {}, label2: {}, label4: {}'.format(label0.sum(), label1.sum(), label2.sum(), label4.sum()))
+
+    _image = label0 + label1 + label2 + label4
+    print('_image: 1: {}, 2: {}, 4: {}'.format((_image==1).sum(), (_image==2).sum(), (_image==4).sum()))
+    image = _image.int()
     # print('<function> sigmoid_deal: \nimage.shape: {}, image_debug: {}'.format(image.shape, image[0, :, :, :]))
+    print('image: 1: {}, 2: {}, 4: {}'.format((image==1).sum(), (image==2).sum(), (image==4).sum()))
 
     return image

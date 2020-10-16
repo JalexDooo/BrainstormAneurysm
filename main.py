@@ -280,7 +280,7 @@ def train(**kwargs):
 		print('load model -> {}'.format(config.training_load_model))
 
 	optimizer = optim.Adam(params=model.parameters(), lr=config.training_lr)
-	scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=20*369, verbose=True)
+	scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=200, verbose=True)
 
 	model.train()
 	for epoch in range(config.training_max_epoch):
@@ -309,18 +309,22 @@ def train(**kwargs):
 					predict = model(_image)
 					# print('predict.shape: {}, _label.shape: {}'.format(predict.shape, _label.shape))
 					losses = criterion(predict, _label)
-				
-				train_dice.append()
+				# predict = sigmoid_deal(predict)
+
+				# print('predict {}, {}, {}, {}'.format((predict==0).sum(), (predict==1).sum(), (predict==2).sum(), (predict==4).sum()))
+
+				train_dice.append(1-float(losses))
 
 				train_loss.append(float(losses))
 				losses.backward()
 				optimizer.step()
 				scheduler.step(losses)
 				# print('image.shape: {}, label.shape: {}'.format(_image.shape, _label.shape))
+				# break
 
-			print('training: {}/{} th, lr: {}'.format(epoch, config.training_max_epoch, optimizer.param_groups[0]['lr']))
-			print('losses: {:0.6f}'.format(sum(train_loss) / len(train_loss) * 1.0))
-				# raise BaseException('My interruption.')
+			print('training: {}/{} th, lr: {:.10f}, losses: {:0.6f}, dice: {}'.format(epoch, config.training_max_epoch, optimizer.param_groups[0]['lr'], sum(train_loss) / len(train_loss) * 1.0,sum(train_dice) / len(train_dice) * 1.0))
+
+			# raise BaseException('one epoch interruption.')
 		if (epoch+1) % 5 == 0:
 			torch.save(model.state_dict(), os.path.join(model_save_dir, 'epoch_{}.pth'.format(epoch+1)))
 
@@ -410,7 +414,7 @@ def val(**kwargs):
 			predict = out_precessing(predict)
 			predictss.append(predict)
 			predicts_names.append(name[0])
-			break
+
 
 	predictss = np.array(predictss)
 	predicts_names = np.array(predicts_names)
@@ -497,7 +501,7 @@ def gan_test():
 
 def ttt():
 	pi = np.pi
-	print("pi is {:6f}".format(pi))
+	print("pi is {:.6f}".format(pi))
 
 
 if __name__ == '__main__':
