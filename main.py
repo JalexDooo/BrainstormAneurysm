@@ -30,6 +30,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 import models
+import loss_function
 from utils.utils import *
 
 from config import opt, config
@@ -256,10 +257,12 @@ def train(**kwargs):
 		model = getattr(models, config.model)(vae_flag=config.model_vae_flag, shape=config.model_input_shape)
 	else:
 		model = getattr(models, config.model)()
-	if config.model_vae_flag:
-		criterion = CombinedLoss(0.1, 0.1)
-	else:
-		criterion = SoftDiceLoss()
+	# if config.model_vae_flag:
+	# 	criterion = CombinedLoss(0.1, 0.1)
+	# else:
+	# 	criterion = MultiClassDiceLoss()
+	
+	criterion = getattr(loss_function, config.training_criterion)()
 	
 	if config.training_use_gpu:
 		gpu_devices = [i for i in range(config.training_use_gpu_num)]
@@ -280,14 +283,20 @@ def train(**kwargs):
 		print('load model -> {}'.format(config.training_load_model))
 
 	optimizer = optim.Adam(params=model.parameters(), lr=config.training_lr)
-	scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=200, verbose=True)
+	if config.training_lr_decay != 1.0:
+		scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=3000, verbose=True)
 
 	model.train()
+	train_loss_epoch = []
+	train_dice_epoch = []
 	for epoch in range(config.training_max_epoch):
 		train_dataset = BraTS2020(config)
 		train_dataloader = DataLoader(train_dataset, batch_size=config.training_batch_size, shuffle=True, num_workers=config.training_num_workers)
 
-		for ii, (image, label) in enumerate(train_dataloader):
+		for ii, (image, label, onehot_label) in enumerate(train_dataloader):
+			# print("label.shape: {}".format(label.shape))
+			# print("label0: {}, label1: {}, label2: {}, label3: {}".format((label[:, 0, 0, ...]==1).sum(), (label[:, 0, 1, ...]==1).sum(), (label[:, 0, 2, ...]==1).sum(), (label[:, 0, 3, ...]==1).sum()))
+			# raise Exception('debug testing.')
 			train_loss = []
 			train_dice = []
 			for kk in range((config.model_input_shape[-1] // config.dataset_random_width) * 2):
@@ -296,37 +305,48 @@ def train(**kwargs):
 				if config.training_use_gpu:
 					_image = image[:, kk, :, :, :, :].cuda()
 					_label = label[:, kk, :, :, :, :].cuda()
+					_onehot_label = onehot_label[:, kk, :, :, :].cuda()
 				else:
-					_image = image[:, kk, :, :, :, :].cuda()
-					_label = label[:, kk, :, :, :, :].cuda()
+					_image = image[:, kk, :, :, :, :]
+					_label = label[:, kk, :, :, :, :]
 
 				optimizer.zero_grad()
 				if config.model_vae_flag:
 					predict, distr = model(_image)
+					# predict = (predict > 0.5).float()
 					losses = criterion(predict, _label, distr)
 					print('distr.shape: {}'.format(distr.shape))
 				else:
 					predict = model(_image)
 					# print('predict.shape: {}, _label.shape: {}'.format(predict.shape, _label.shape))
-					losses = criterion(predict, _label)
+					# predict = (predict > 0.5).float()
+					losses = criterion(predict, _label, _onehot_label)
+				# print("predict.shape: {}".format(predict.shape))
+				value, predict = t.max(predict, dim=1)
 				# predict = sigmoid_deal(predict)
 
-				# print('predict {}, {}, {}, {}'.format((predict==0).sum(), (predict==1).sum(), (predict==2).sum(), (predict==4).sum()))
+				# print('predict {}, {}, {}, {}'.format((predict==0).sum(), (predict==1).int().sum(), (predict==2).sum(), (predict==3).sum()))
 
-				train_dice.append(1-float(losses))
-
+				train_dice.append(dice(predict, _onehot_label.long())/4)
 				train_loss.append(float(losses))
 				losses.backward()
 				optimizer.step()
-				scheduler.step(losses)
-				# print('image.shape: {}, label.shape: {}'.format(_image.shape, _label.shape))
-				# break
+				if config.training_lr_decay != 1.0:
+					scheduler.step(losses)
 
-			print('training: {}/{} th, lr: {:.10f}, losses: {:0.6f}, dice: {}'.format(epoch, config.training_max_epoch, optimizer.param_groups[0]['lr'], sum(train_loss) / len(train_loss) * 1.0,sum(train_dice) / len(train_dice) * 1.0))
+		loss_debug = sum(train_loss) / len(train_loss)
+		dice_debug = sum(train_dice) / len(train_dice)
 
-			# raise BaseException('one epoch interruption.')
+		print('training: {}/{} th, lr: {:.10f}, losses: {:0.6f}, dice: {}'.format(epoch, config.training_max_epoch, optimizer.param_groups[0]['lr'], loss_debug, dice_debug))
+		
+		train_loss_epoch.append(loss_debug)
+		train_dice_epoch.append(dice_debug)
+
+			# raise BaseException('one epoch one case interruption.')
 		if (epoch+1) % 5 == 0:
 			torch.save(model.state_dict(), os.path.join(model_save_dir, 'epoch_{}.pth'.format(epoch+1)))
+	print('train_loss: {}'.format(train_loss_epoch))
+	print('train_dice: {}'.format(train_dice_epoch))
 
 
 def val(**kwargs):
@@ -389,12 +409,13 @@ def val(**kwargs):
 					else:
 						predict = model(_image)
 
-				# print('predict.shape: {}, predict: {}'.format(predict.shape, predict[0, 1, 80:81, 80:82, 80:82]))
-				# value, tmp = t.max(predict, dim=1)
-				predict = sigmoid_deal(predict)
+				print("predicy.shape: {}".format(predict.shape))
+				value, predict = t.max(predict, dim=1)
+				print("predict0123: 0: {}, 1: {}, 2: {}, 3: {}".format((predict==0).sum(), (predict==1).sum(), (predict==2).sum(), (predict==3).sum()))
+				# predict = sigmoid_deal(predict)
 				# raise Exception('debug exception for label out processing.')
-				out_predicts.append(predict)
-			
+				out_predicts.append(predict.int())
+
 			out_z_axis = t.cat((out_predicts[0], out_predicts[1]), dim=-1)
 			for kk in range(size_axis-2):
 				out_z_axis = t.cat((out_z_axis, out_predicts[kk+2]), dim=-1)
@@ -402,7 +423,7 @@ def val(**kwargs):
 			out_y_axis = t.cat((out_predicts[0+size_axis], out_predicts[1+size_axis]), dim=-1)
 			for kk in range(size_axis-2):
 				out_y_axis = t.cat((out_y_axis, out_predicts[size_axis+kk+2]), dim=-1)
-			
+
 			predict = t.cat((out_z_axis, out_y_axis), dim=-2)
 			predict = predict.data.cpu().numpy()
 
@@ -414,6 +435,7 @@ def val(**kwargs):
 			predict = out_precessing(predict)
 			predictss.append(predict)
 			predicts_names.append(name[0])
+			break
 
 
 	predictss = np.array(predictss)

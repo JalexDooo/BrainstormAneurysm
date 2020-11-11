@@ -199,19 +199,21 @@ class BraTS2020(Dataset):
     def __getitem__(self, idx):
         path = self.path_list[idx]
 
-        image, label, box_min, box_max = self._read_image(path)
+        image, label, onehot_label, box_min, box_max = self._read_image(path)
         if self.is_train:
             image = torch.from_numpy(image).float()
             label = torch.from_numpy(label).float()
-            return image, label
+            onehot_label = torch.from_numpy(onehot_label).float()
+            return image, label, onehot_label
         else:
             image = torch.from_numpy(image).float()
             name = path.split('/')[-1]
             return image, name, box_min, box_max
     
-    def _random_slice(self, image, label):
+    def _random_slice(self, image, label, onehot_label):
         image_volumn = []
         label_volumn = []
+        onehot_label_volumn = []
 
         if self.is_train:
             for _ in range(self.times*2):
@@ -219,6 +221,7 @@ class BraTS2020(Dataset):
                 idz = np.random.randint(0, image.shape[3] - self.random_width + 1)
                 image_volumn.append(image[:, :, idy:idy+self.random_width, idz:idz+self.random_width])
                 label_volumn.append(label[:, :, idy:idy+self.random_width, idz:idz+self.random_width])
+                onehot_label_volumn.append(onehot_label[:, idy:idy+self.random_width, idz:idz+self.random_width])
         else:
             for i in range(self.times):
                 for j in range(self.times):
@@ -226,14 +229,16 @@ class BraTS2020(Dataset):
                     idz = j * self.random_width
                     image_volumn.append(image[:, :, idy:idy + self.random_width, idz:idz + self.random_width])
 
-        return np.asarray(image_volumn), np.asarray(label_volumn)
+        return np.asarray(image_volumn), np.asarray(label_volumn), np.asarray(onehot_label_volumn)
 
     def _read_image(self, path):
         image = []
         label = []
+        onehot_label = []
         image_t, label_t = make_image_label(path)
         flair, t1, t1ce, t2 = image_t
         seg = label_t
+        onehot_label = label_t
 
         # 按照flair确定裁剪区域
         box_min, box_max = get_box(flair, 0)
@@ -246,6 +251,7 @@ class BraTS2020(Dataset):
         t2 = crop_with_box(t2, index_min, index_max)
         if self.is_train:
             seg = crop_with_box(seg, index_min, index_max)
+            onehot_label = crop_with_box(onehot_label, index_min, index_max)
             # 随机强度偏移
             flair = random_bias(flair)
             t1 = random_bias(t1)
@@ -261,8 +267,10 @@ class BraTS2020(Dataset):
             t1ce = random_reverse(t1ce, d1, d2, d3)
             t2 = random_reverse(t2, d1, d2, d3)
             seg = random_reverse(seg, d1, d2, d3)
+            onehot_label = random_reverse(onehot_label, d1, d2, d3)
 
             label = label_processing(seg)
+            plt.imshow()
 
         # 标准化
         flair = normalization(flair)
@@ -277,8 +285,10 @@ class BraTS2020(Dataset):
 
         image = np.asarray(image)
         label = np.asarray(label)
+        onehot_label = np.asarray(onehot_label)
+        onehot_label = get__labels(onehot_label)
         # print('dataset-> image.shape: {}, label.shape: {}'.format(image.shape, label.shape))
-        image, label = self._random_slice(image, label)
+        image, label, onehot_label = self._random_slice(image, label, onehot_label)
         # print('dataset random slice-> image.shape: {}, label.shape: {}'.format(image.shape, label.shape))
 
-        return image, label, index_min, index_max
+        return image, label, onehot_label, index_min, index_max

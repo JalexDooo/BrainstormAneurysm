@@ -169,8 +169,8 @@ def normalization(image):
     return image
 
 
-def get_WT_labels(image):
-    return (image == 1) * 1.0 + (image == 2) * 1.0 + (image == 4) * 1.0
+def get__labels(image):
+    return (image == 1) * 1.0 + (image == 2) * 2.0 + (image == 4) * 3.0
 
 
 def get_TC_labels(image):
@@ -230,6 +230,7 @@ def label_processing(label):
     lbl.append(label==2)
     lbl.append(label==4)
     label = np.asarray(lbl)
+    # print("out_processing: lbl0, {}, lbl1: {}, lbl2: {}, lbl3: {}".format(label[0].sum(), label[1].sum(), label[2].sum(), label[3].sum()))
     return label
 
 def random_bias(image):

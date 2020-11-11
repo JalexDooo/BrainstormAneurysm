@@ -236,20 +236,20 @@ def sigmoid_deal(image):
 
     """
     print('image.shape: {}'.format(image.shape))
-    
     image = image > 0.5
+    # print('>0.5 ---: 0: {}, 1: {}, 2: {}, 4: {}'.format((image[:, 0, ...]==1).sum(), (image[:, 1, ...]==1).sum(), (image[:, 2, ...]==1).sum(), (image[:, 3, ...]==1).sum()))
     # if intersactive
-    label0 = ((image[:, 0, ...]==1)).int()*0
-    label1 = ((image[:, 3, ...]==0)*(image[:, 2, ...]==0)*(image[:, 1, ...]==1)).int()*1
-    label2 = ((image[:, 3, ...]==0)*(image[:, 2, ...]==1)).int()*2 
-    label4 = ((image[:, 3, ...]==1)).int()*4.0
+    label0 = ((image[:, :, 0, ...]==1)).int()*0
+    label1 = ((image[:, :, 3, ...]==0)*(image[:, :, 2, ...]==0)*(image[:, :, 1, ...]==1)).int()*1
+    label2 = ((image[:, :, 3, ...]==0)*(image[:, :, 2, ...]==1)).int()*2 
+    label4 = ((image[:, :, 3, ...]==1)).int()*4.0
 
-    print('label0: {}, label1: {}, label2: {}, label4: {}'.format(label0.sum(), label1.sum(), label2.sum(), label4.sum()))
+    # print('label0: {}, label1: {}, label2: {}, label4: {}'.format(label0.sum(), label1.sum(), label2.sum(), label4.sum()))
 
     _image = label0 + label1 + label2 + label4
-    print('_image: 1: {}, 2: {}, 4: {}'.format((_image==1).sum(), (_image==2).sum(), (_image==4).sum()))
+    # print('_image: 1: {}, 2: {}, 4: {}'.format((_image==1).sum(), (_image==2).sum(), (_image==4).sum()))
     image = _image.int()
     # print('<function> sigmoid_deal: \nimage.shape: {}, image_debug: {}'.format(image.shape, image[0, :, :, :]))
-    print('image: 1: {}, 2: {}, 4: {}'.format((image==1).sum(), (image==2).sum(), (image==4).sum()))
+    # print('image: 1: {}, 2: {}, 4: {}'.format((image==1).sum(), (image==2).sum(), (image==4).sum()))
 
     return image

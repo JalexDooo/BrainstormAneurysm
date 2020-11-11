@@ -67,10 +67,11 @@ class BraTS2020Config(object):
     training_num_workers = 0
     training_load_model = None
 
+    training_criterion = 'SingleCrossEntropyDiceLoss'
     training_batch_size = 2
     training_max_epoch = 100
-    training_lr = 0.001
-    training_lr_decay = 0.9
+    training_lr = 0.01
+    training_lr_decay = 1.0
 
     val_use_gpu = True
     val_use_gpu_num = 1

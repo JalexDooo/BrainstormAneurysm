@@ -6,7 +6,7 @@ from .basicmodule import *
 
 
 class NormalResNet(nn.Module):
-    def __init__(self, in_data=4, out_data=5):
+    def __init__(self, in_data=4, out_data=4):
         super(NormalResNet, self).__init__()
         kn = [32, 64, 128, 256, 512]
 

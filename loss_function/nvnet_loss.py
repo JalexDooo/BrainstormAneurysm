@@ -56,3 +56,70 @@ class CombinedLoss(_Loss):
         #print("dice_loss:%.4f, L2_loss:%.4f, KL_div:%.4f, combined_loss:%.4f"%(dice_loss,l2_loss,kl_div,combined_loss))
         
         return combined_loss
+
+
+class DiceLoss(_Loss):
+    """Dice loss.
+    """
+    def __init__(self):
+        super(DiceLoss, self).__init__()
+    
+    def forward(self, predict, target, eps=1e-6):
+        batch_size = predict.size(0)
+
+        predict_flat = predict.view(batch_size, -1)
+        target_flat = target.view(batch_size, -1)
+
+        intersection = predict_flat * target_flat
+
+        dice = 2 * (intersection.sum(1)) / (predict_flat.sum(1) + target_flat.sum(1) + eps)
+        loss = 1 - dice.sum() / batch_size
+        # print("<DiceLoss> -> intersection.sum(1): {}, predict_flat.sum(1): {}, target_flat.sum(1): {}, dice.sum(): {}, loss: {}".format(intersection.sum(1), predict_flat.sum(1), target_flat.sum(1), dice.sum(), loss))
+        return loss
+
+
+class MultiClassDiceLoss(_Loss):
+    """Multi Class Dice Loss.
+    """
+    def __init__(self):
+        super(MultiClassDiceLoss, self).__init__()
+    
+    def forward(self, predict, target, weights=None):
+        dice = DiceLoss()
+        _class = target.shape[1]
+
+        # if weights is None:
+        #     weights = t.ones(_class)
+        
+        total_loss = 0.0
+
+        for i in range(_class):
+            dice_loss = dice(predict[:, i, ...], target[:, i, ...])
+            if weights is not None:
+                dice_loss *= weights[i]
+            total_loss += dice_loss
+        
+        return total_loss
+
+
+class CrossEntropyDiceLoss(_Loss):
+    def __init__(self):
+        super(CrossEntropyDiceLoss, self).__init__()
+        self.cross_entropy_loss = nn.CrossEntropyLoss()
+        self.dice_loss = SoftDiceLoss()
+    
+    def forward(self, predict, target, onehot_target, weights=[0.95, 0.05]):
+        loss1 = self.cross_entropy_loss(predict, onehot_target.long())
+        loss2 = self.dice_loss(predict, target)
+
+        total_loss = weights[0] * loss1 + weights[1] * loss2
+        return total_loss
+
+
+class SingleCrossEntropyDiceLoss(_Loss):
+    def __init__(self):
+        super(SingleCrossEntropyDiceLoss, self).__init__()
+        self.loss = nn.CrossEntropyLoss()
+    
+    def forward(self, predict, target, onehot_target):
+        return self.loss(predict, onehot_target.long())
