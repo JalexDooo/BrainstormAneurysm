@@ -294,6 +294,7 @@ def train(**kwargs):
 		train_dataloader = DataLoader(train_dataset, batch_size=config.training_batch_size, shuffle=True, num_workers=config.training_num_workers)
 
 		for ii, (image, label, onehot_label) in enumerate(train_dataloader):
+			print('epoch: {}, idx: {}'.format(epoch, ii))
 			# print("label.shape: {}".format(label.shape))
 			# print("label0: {}, label1: {}, label2: {}, label3: {}".format((label[:, 0, 0, ...]==1).sum(), (label[:, 0, 1, ...]==1).sum(), (label[:, 0, 2, ...]==1).sum(), (label[:, 0, 3, ...]==1).sum()))
 			# raise Exception('debug testing.')
@@ -426,19 +427,26 @@ def val(**kwargs):
 
 			predict = t.cat((out_z_axis, out_y_axis), dim=-2)
 			predict = predict.data.cpu().numpy()
+			print('predict.shape: {}, {}'.format(predict.shape, predict.dtype)) # int32
 
 			pp = np.zeros((155, 240, 240), dtype=np.int32)
 			x, y, z = box_min
 			x_, y_, z_ = config.model_input_shape
 			pp[x:x + x_, y:y + y_, z:z + z_] = predict[0]
+			print('pp.shape: {}, {}'.format(pp.shape, pp.dtype)) # int32
 			predict = np.transpose(pp, [2, 1, 0])
 			predict = out_precessing(predict)
 			predictss.append(predict)
 			predicts_names.append(name[0])
 			break
 
-
-	predictss = np.array(predictss)
+	predictss = np.asarray(predictss, dtype=np.int32)
+	# print('before dtype predictss.shape: {}, type: {}'.format(predictss.shape, predictss.dtype))
+	# predictss.dtype = 'int32'
+	# print('after dtype predictss.shape: {}'.format(predictss.shape))
+	
+	# print('redictss.shape: {}'.format(predictss.shape))
+	# redictss.shape: (1, 240, 240, 1240)
 	predicts_names = np.array(predicts_names)
 
 	# output path
@@ -521,9 +529,10 @@ def gan_test():
 				print('Epoch [{}/{}], d_loss: {:.6f}, g_loss: {:.6f} D real: {:.6f}, D fake: {:.6f}'.format(epoch, num_epoch, d_loss.data[0], g_loss.data[0], real_scores.data.mean(), fake_scores.data.mean() ))
 
 
-def ttt():
-	pi = np.pi
-	print("pi is {:.6f}".format(pi))
+def ttt(**kwargs):
+	config._parse(kwargs)
+	dataset = BraTS2020(config)
+	dataset[0]
 
 
 if __name__ == '__main__':

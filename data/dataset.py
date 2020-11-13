@@ -198,6 +198,7 @@ class BraTS2020(Dataset):
     
     def __getitem__(self, idx):
         path = self.path_list[idx]
+        # print('path: {}'.format(path))
 
         image, label, onehot_label, box_min, box_max = self._read_image(path)
         if self.is_train:
@@ -270,7 +271,10 @@ class BraTS2020(Dataset):
             onehot_label = random_reverse(onehot_label, d1, d2, d3)
 
             label = label_processing(seg)
-            plt.imshow()
+
+            # plt.imshow(flair[70, :, :])
+            # plt.show()
+            # raise Exception("my break")
 
         # 标准化
         flair = normalization(flair)

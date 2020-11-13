@@ -19,9 +19,10 @@
 # Redesigned code for training.
 # cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NvNet' --training_use_gpu_num=2 --training_batch_size=2 --model_vae_flag=False
 # cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NvNet' --training_use_gpu_num=4 --training_batch_size=4 --model_vae_flag=False --training_max_epoch=100
-cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NormalResNet' --training_use_gpu_num=4 --training_batch_size=8 --model_vae_flag=False --training_max_epoch=100
+cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='NormalResNet' --training_use_gpu_num=4 --training_batch_size=8 --model_vae_flag=False --training_max_epoch=100 --training_lr_decay=0.98
 
 
 # Redesigned code for validation.
 # cd /home/sunjindong/BrainstormBraTS2020 && python main.py val --model='NvNet' --training_use_gpu_num=6 --training_batch_size=6 --model_vae_flag=False --predict_path='./NvNet_Validation/'
 # cd /home/sunjindong/BrainstormBraTS2020 && python main.py val --model='NormalResNet' --training_use_gpu_num=1 --training_batch_size=1 --model_vae_flag=False --val_load_model='epoch_20.pth' --predict_path='./NResNet_Validation/'
+# cd /home/sunjindong/BrainstormBraTS2020 && python main.py val --model='NormalResNet' --model_vae_flag=False --predict_path='./NResNet_Validation_/'
