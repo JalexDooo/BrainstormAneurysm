@@ -12,12 +12,12 @@ class ConvBlock(nn.Module):
         self.conv1 = nn.Sequential(
             nn.Conv3d(input_data, output_data, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm3d(output_data),
-            nn.ReLU(inplace=True)
+            nn.RReLU(inplace=True)
         )
         self.conv2 = nn.Sequential(
             nn.Conv3d(output_data, output_data, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm3d(output_data),
-            nn.ReLU(inplace=True)
+            nn.RReLU(inplace=True)
         )
 
     def forward(self, x):
@@ -65,10 +65,15 @@ class ConvTransBlock(nn.Module):
 
 
 class UpBlock(nn.Module):
-    def __init__(self, input_data, output_data):
+    def __init__(self, input_data, output_data, mode='V1'):
         super(UpBlock, self).__init__()
         self.up = ConvTransBlock(input_data, output_data)
         self.down = ConvBlock(2 * output_data, output_data)
+        if mode == 'V1':
+            self.down = nn.Sequential(
+                ConvBlock(2 * output_data, 2 * output_data),
+                ConvBlock(2 * output_data, output_data)
+            )
 
     def forward(self, x, down_features):
         x = self.up(x)

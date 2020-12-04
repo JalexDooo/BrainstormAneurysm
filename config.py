@@ -60,7 +60,7 @@ class BraTS2020Config(object):
 
     dataset_train_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
     dataset_val_path = '/home/sunjindong/dataset/MICCAI_BraTS2020_ValidationData/MICCAI_BraTS2020_ValidationData' 
-    dataset_random_width = 96
+    dataset_random_width = 64
 
     training_use_gpu = True
     training_use_gpu_num = 4
@@ -70,7 +70,7 @@ class BraTS2020Config(object):
     training_criterion = 'SingleCrossEntropyDiceLoss'
     training_batch_size = 2
     training_max_epoch = 100
-    training_lr = 0.01
+    training_lr = 0.001
     training_lr_decay = 1.0
 
     val_use_gpu = True

@@ -96,9 +96,7 @@ class BraTS_Random(Dataset):
         # label2 = get_ed_labels(seg)
         # label3 = get_ot_labels(seg)
         # label4 = get_tumor_core_labels(seg)
-        if self.task == 'WT' and seg:
-            label = get_WT_labels(seg)
-        elif self.task == 'TC' and seg:
+        if self.task == 'TC' and seg:
             label = get_TC_labels(seg)
         elif self.task == 'ET' and seg:
             label = get_ET_labels(seg)
@@ -210,7 +208,7 @@ class BraTS2020(Dataset):
             image = torch.from_numpy(image).float()
             name = path.split('/')[-1]
             return image, name, box_min, box_max
-    
+
     def _random_slice(self, image, label, onehot_label):
         image_volumn = []
         label_volumn = []
@@ -274,6 +272,8 @@ class BraTS2020(Dataset):
 
             # plt.imshow(flair[70, :, :])
             # plt.show()
+            # plt.imshow(seg[70, :, :])
+            # plt.show()
             # raise Exception("my break")
 
         # 标准化
@@ -286,7 +286,6 @@ class BraTS2020(Dataset):
         image.append(t1)
         image.append(t1ce)
         image.append(t2)
-
         image = np.asarray(image)
         label = np.asarray(label)
         onehot_label = np.asarray(onehot_label)

@@ -175,7 +175,8 @@ def multi_val_random(**kwargs):
 	predictss = []
 	predicts_names = []
 
-	save_nii_head_path = opt.val_root_path + '/BraTS20_Testing_001/BraTS20_Testing_001_flair.nii.gz'
+	save_nii_head_path = opt.val_root_path + '/BraTS20_Validation_001/BraTS20_Validation_001_flair.nii.gz'
+	# BraTS20_Validation_001
 	# save_nii_head_path = opt.val_root_path + '/Brats18_CBICA_AAM_1/Brats18_CBICA_AAM_1_flair.nii.gz'
 	head_image = nib.load(save_nii_head_path)
 	affine = head_image.affine
@@ -232,18 +233,6 @@ def tem(**kwargs):
 	c.append(Accuracy_list)
 
 	figure_multi_array(c, labels=['loss', 'acc'], save_path='loss.jpg', xlabel='xlabel', ylabel='ylabel', title='title')
-	
-
-def test(**kwargs):
-	config._parse(kwargs)
-	# if config.training_use_gpu and not t.cuda.is_available():
-	# 	print('Using GPU, but cuda is not available!!')
-	# 	return
-	
-	model = getattr(models, config.model)()
-	if config.training_use_gpu:
-		gpu_devices = [i for i in range(config.training_use_gpu_num)]
-		print(gpu_devices)
 
 
 def train(**kwargs):
@@ -284,7 +273,7 @@ def train(**kwargs):
 
 	optimizer = optim.Adam(params=model.parameters(), lr=config.training_lr)
 	if config.training_lr_decay != 1.0:
-		scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=3000, verbose=True)
+		scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=1-config.training_lr_decay, patience=20, verbose=True)
 
 	model.train()
 	train_loss_epoch = []
@@ -292,9 +281,8 @@ def train(**kwargs):
 	for epoch in range(config.training_max_epoch):
 		train_dataset = BraTS2020(config)
 		train_dataloader = DataLoader(train_dataset, batch_size=config.training_batch_size, shuffle=True, num_workers=config.training_num_workers)
-
+		tmp_losses = []
 		for ii, (image, label, onehot_label) in enumerate(train_dataloader):
-			print('epoch: {}, idx: {}'.format(epoch, ii))
 			# print("label.shape: {}".format(label.shape))
 			# print("label0: {}, label1: {}, label2: {}, label3: {}".format((label[:, 0, 0, ...]==1).sum(), (label[:, 0, 1, ...]==1).sum(), (label[:, 0, 2, ...]==1).sum(), (label[:, 0, 3, ...]==1).sum()))
 			# raise Exception('debug testing.')
@@ -328,24 +316,28 @@ def train(**kwargs):
 
 				# print('predict {}, {}, {}, {}'.format((predict==0).sum(), (predict==1).int().sum(), (predict==2).sum(), (predict==3).sum()))
 
-				train_dice.append(dice(predict, _onehot_label.long())/4)
+				train_dice.append(dice(predict, _onehot_label.long())/3)
 				train_loss.append(float(losses))
 				losses.backward()
 				optimizer.step()
-				if config.training_lr_decay != 1.0:
-					scheduler.step(losses)
+				tmp_losses.append(losses)
+				# if config.training_lr_decay != 1.0:
+				# 	scheduler.step(losses)
 
 		loss_debug = sum(train_loss) / len(train_loss)
 		dice_debug = sum(train_dice) / len(train_dice)
+		tmp_loss = sum(tmp_losses) / len(tmp_losses)
+		if config.training_lr_decay != 1.0:
+			scheduler.step(tmp_loss)
 
 		print('training: {}/{} th, lr: {:.10f}, losses: {:0.6f}, dice: {}'.format(epoch, config.training_max_epoch, optimizer.param_groups[0]['lr'], loss_debug, dice_debug))
-		
 		train_loss_epoch.append(loss_debug)
 		train_dice_epoch.append(dice_debug)
 
 			# raise BaseException('one epoch one case interruption.')
 		if (epoch+1) % 5 == 0:
 			torch.save(model.state_dict(), os.path.join(model_save_dir, 'epoch_{}.pth'.format(epoch+1)))
+
 	print('train_loss: {}'.format(train_loss_epoch))
 	print('train_dice: {}'.format(train_dice_epoch))
 
@@ -395,8 +387,9 @@ def val(**kwargs):
 		predicts_names = []
 
 		for ii, (image, name, box_min, box_max) in enumerate(val_dataloader):
+			print('image.shape: {}'.format(image.shape))
 			out_predicts = []
-			for kk in range(size_axis * 2):
+			for kk in range(size_axis * size_axis):
 				if config.val_use_gpu:
 					_image = image[:, kk, :, :, :, :].cuda()
 				else:
@@ -410,13 +403,33 @@ def val(**kwargs):
 					else:
 						predict = model(_image)
 
-				print("predicy.shape: {}".format(predict.shape))
+				# print("predicy.shape: {}".format(predict.shape))
 				value, predict = t.max(predict, dim=1)
-				print("predict0123: 0: {}, 1: {}, 2: {}, 3: {}".format((predict==0).sum(), (predict==1).sum(), (predict==2).sum(), (predict==3).sum()))
+				# print("predict0123: 0: {}, 1: {}, 2: {}, 3: {}".format((predict==0).sum(), (predict==1).sum(), (predict==2).sum(), (predict==3).sum()))
 				# predict = sigmoid_deal(predict)
 				# raise Exception('debug exception for label out processing.')
 				out_predicts.append(predict.int())
+			
+			out_z_axis = []
+			# print('out_z_axis.shape: {}'.format(out_z_axis))
+			# raise Exception('output out_z_axis')
 
+			for yyy in range(size_axis):
+				for zzz in range(size_axis-1):
+					# print('out_predicts.shape: {}, yyy*size_axis: {}'.format(len(out_predicts), yyy*size_axis))
+					# print('yyy: {}, zzz: {}, {}, {}'.format(yyy, zzz, out_predicts[yyy*size_axis].shape, out_predicts[yyy*size_axis+1].shape))
+					if zzz == 0:
+						 out_z_axis.append( t.cat((out_predicts[yyy*size_axis], out_predicts[yyy*size_axis+1]), dim=-1) )
+					else:
+						out_z_axis[yyy] = t.cat((out_z_axis[yyy], out_predicts[yyy*size_axis+zzz+1]), dim=-1)
+			for yyy in range(size_axis-1):
+				if yyy == 0:
+					predict = t.cat((out_z_axis[0], out_z_axis[1]), dim=-2)
+				else:
+					predict = t.cat((predict, out_z_axis[yyy+1]), dim=-2)
+			# print('predict.shape: {}'.format(predict.shape))
+			# raise Exception('My break.')
+			'''
 			out_z_axis = t.cat((out_predicts[0], out_predicts[1]), dim=-1)
 			for kk in range(size_axis-2):
 				out_z_axis = t.cat((out_z_axis, out_predicts[kk+2]), dim=-1)
@@ -426,19 +439,19 @@ def val(**kwargs):
 				out_y_axis = t.cat((out_y_axis, out_predicts[size_axis+kk+2]), dim=-1)
 
 			predict = t.cat((out_z_axis, out_y_axis), dim=-2)
+			'''
 			predict = predict.data.cpu().numpy()
-			print('predict.shape: {}, {}'.format(predict.shape, predict.dtype)) # int32
-
+			# print('predict.shape: {}, {}'.format(predict.shape, predict.dtype)) # int32
 			pp = np.zeros((155, 240, 240), dtype=np.int32)
 			x, y, z = box_min
 			x_, y_, z_ = config.model_input_shape
 			pp[x:x + x_, y:y + y_, z:z + z_] = predict[0]
-			print('pp.shape: {}, {}'.format(pp.shape, pp.dtype)) # int32
+			# print('pp.shape: {}, {}'.format(pp.shape, pp.dtype)) # int32
 			predict = np.transpose(pp, [2, 1, 0])
+			predict = out_val_processing(predict)
 			predict = out_precessing(predict)
 			predictss.append(predict)
 			predicts_names.append(name[0])
-			break
 
 	predictss = np.asarray(predictss, dtype=np.int32)
 	# print('before dtype predictss.shape: {}, type: {}'.format(predictss.shape, predictss.dtype))
@@ -467,72 +480,7 @@ def val(**kwargs):
 		nib.save(output, predict_path + predicts_names[i] + '.nii.gz')
 
 
-def gan_test():
-	from torchvision import datasets
-	from torchvision import transforms
-	import models.gan as gan
 
-	img_transform = transforms.Compose([
-		transforms.ToTensor(),
-		transforms.Normalize(mean=0.5, std=0.5)
-	])
-	mnist = datasets.MNIST(
-		root='./MNIST/', train=True, transform=img_transform, download=False
-	)
-	
-	dataloader = torch.utils.data.DataLoader(dataset=mnist, batch_size=128, shuffle=True)
-
-	print('mnist[0].shape: ', mnist)
-	discriminator = gan.DiscriminatorGAN()
-	generator = gan.GenerativeGAN()
-
-	criterion = nn.BCELoss()
-	d_optim = optim.Adam(discriminator.parameters(), lr=0.0003)
-	g_optim = optim.Adam(generator.parameters(), lr=0.0003)
-	num_epoch = 10
-	for epoch in range(num_epoch):
-		for i, (img, _) in enumerate(dataloader):
-			print('img.shape: ', img.shape)
-			num_img = img.size(0)
-			print('num_img: ', num_img)
-			# train discriminator
-			img = img.view(num_img, -1)
-			real_img = Variable(img)
-			real_label = Variable(t.ones(num_img))
-			fake_label = Variable(t.zeros(num_img))
-
-			real_out = discriminator(real_img)
-			d_loss_real = criterion(real_out, real_label)
-			real_scores = real_out
-
-			z = Variable(t.randn(num_img, 100))
-			fake_img = generator(z)
-			fake_out = discriminator(fake_img)
-			d_loss_fake = criterion(fake_out, fake_label)
-			fake_scores = fake_out
-
-			d_loss = d_loss_real + d_loss_fake
-			d_optim.zero_grad()
-			d_loss.backward()
-			d_optim.step()
-
-			# train generator
-			z = Variable(t.randn(num_img, 100))
-			fake_img = generator(z)
-			output = discriminator(fake_img)
-			g_loss = criterion(output, real_label)
-			g_optim.zero_grad()
-			g_loss.backward()
-			g_optim.step()
-
-			if (i + 1) % 10 == 0:
-				print('Epoch [{}/{}], d_loss: {:.6f}, g_loss: {:.6f} D real: {:.6f}, D fake: {:.6f}'.format(epoch, num_epoch, d_loss.data[0], g_loss.data[0], real_scores.data.mean(), fake_scores.data.mean() ))
-
-
-def ttt(**kwargs):
-	config._parse(kwargs)
-	dataset = BraTS2020(config)
-	dataset[0]
 
 
 if __name__ == '__main__':

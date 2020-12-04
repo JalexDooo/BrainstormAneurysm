@@ -155,15 +155,21 @@ def crop_with_box(image, index_min, index_max):
 def out_precessing(label):
     tmp = np.asarray(label)
 
-    print('before out_processing: label is 0: {}, label is 1: {}, label is 2: {}, label is 3: {}, label is 4: {}'.format((label==0).sum(), (label==1).sum(), (label==2).sum(), (label==3).sum(), (label==4).sum()))
+    # print('before out_processing: label is 0: {}, label is 1: {}, label is 2: {}, label is 3: {}, label is 4: {}'.format((label==0).sum(), (label==1).sum(), (label==2).sum(), (label==3).sum(), (label==4).sum()))
 
-    if (tmp==3).sum() <= 500:
-        tmp = (tmp == 3)*1 + (tmp == 1)*1 + (tmp==2)*2
-    tmp = (tmp == 3)*4 + (tmp == 1)*1 + (tmp==2)*2
-    print('after out_processing: label is 0: {}, label is 1: {}, label is 2: {}, label is 3: {}, label is 4: {}'.format((tmp==0).sum(), (tmp==1).sum(), (tmp==2).sum(), (tmp==3).sum(), (tmp==4).sum()))
-    c = (tmp!=0)*(tmp!=1)*(tmp!=2)*(tmp!=3)*(tmp!=4)
-    print('c.sum(): {}'.format(c.sum()))
+    if (tmp==4).sum() <= 500:
+        tmp = (tmp == 4)*1 + (tmp == 1)*1 + (tmp==2)*2
+    # tmp = (tmp == 3)*4 + (tmp == 1)*1 + (tmp==2)*2
+    # print('after out_processing: label is 0: {}, label is 1: {}, label is 2: {}, label is 3: {}, label is 4: {}'.format((tmp==0).sum(), (tmp==1).sum(), (tmp==2).sum(), (tmp==3).sum(), (tmp==4).sum()))
+    # c = (tmp!=0)*(tmp!=1)*(tmp!=2)*(tmp!=3)*(tmp!=4)
+    # print('c.sum(): {}'.format(c.sum()))
     return tmp
+
+
+def out_val_processing(label):
+    tmp = np.asarray(label)
+    tmp = (tmp == 3) * 4 + (tmp == 1) * 1 + (tmp == 2) * 2
+    return tmp 
 
 
 def load_nii_to_array(path):
