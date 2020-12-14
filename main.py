@@ -93,12 +93,12 @@ def train(**kwargs):
 			scheduler.step(losses)
 
 		print('epoch {}/{}: losses: {}, dices: {}'.format(epoch, config.max_epoch, losses, dices))
+		t.save(model.state_dict(), os.path.join(ckpt_path, config.model + '.pth'))
 	
 	print('figure_losses:')
 	print(figure_losses)
 	print('figure_dices:')
 	print(figure_dices)
-	torch.save(model.state_dict(), os.path.join(ckpt_path, config.model + '.pth'))
 
 
 

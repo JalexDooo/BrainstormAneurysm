@@ -9,3 +9,6 @@
 ## V0.2
 - 输出loss与dice
 - 画loss与dice图
+
+## V3.0 beta
+- 修改Bugs
