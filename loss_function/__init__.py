@@ -1,1 +1,1 @@
-from .nvnet_loss import CrossEntropyDiceLoss, SingleCrossEntropyDiceLoss
+from .CrossEntropyLoss import CrossEntropyLoss

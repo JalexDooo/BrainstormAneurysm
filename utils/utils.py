@@ -18,13 +18,10 @@ def netSize(net):
     return k
 
 
-def dice(predict, target):
-    """
+def dice(predict, target, val=1.0):
+    predict = (predict==val).float()
+    target = (target==val).float()
 
-    :param predict: 4D Long Tensor Batch_Size * 16(volume_size) * height * weight
-    :param target:  4D Long Tensor Batch_Size * 16(volume_size) * height * weight
-    :return:
-    """
     smooth = 0.00000001
     batch_num = target.shape[0]
     target = target.view(batch_num, -1)
