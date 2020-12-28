@@ -197,21 +197,21 @@ class BraTS2020(nn.Module):
             labels = crop_with_box(labels, index_min, index_max)
             ###############
             # 随机强度偏移
-            flair = random_bias(flair)
-            t1 = random_bias(t1)
-            t1ce = random_bias(t1ce)
-            t2 = random_bias(t2)
+            # flair = random_bias(flair)
+            # t1 = random_bias(t1)
+            # t1ce = random_bias(t1ce)
+            # t2 = random_bias(t2)
 
-            # 随机镜像反转
-            d1 = random.choice([True, False])
-            d2 = random.choice([True, False])
-            d3 = random.choice([True, False])
-            flair = random_reverse(flair, d1, d2, d3)
-            t1 = random_reverse(t1, d1, d2, d3)
-            t1ce = random_reverse(t1ce, d1, d2, d3)
-            t2 = random_reverse(t2, d1, d2, d3)
+            # # 随机镜像反转
+            # d1 = random.choice([True, False])
+            # d2 = random.choice([True, False])
+            # d3 = random.choice([True, False])
+            # flair = random_reverse(flair, d1, d2, d3)
+            # t1 = random_reverse(t1, d1, d2, d3)
+            # t1ce = random_reverse(t1ce, d1, d2, d3)
+            # t2 = random_reverse(t2, d1, d2, d3)
 
-            labels = random_reverse(labels, d1, d2, d3)
+            # labels = random_reverse(labels, d1, d2, d3)
             ###############
             # Other approaches
             labels = label_processing(labels)
@@ -229,8 +229,8 @@ class BraTS2020(nn.Module):
         images = np.asarray(images)
 
         ###############
-        # images, labels = random_slice(images, labels, self.times, self.random_width, use=False, is_train=self.is_train)
-        images, labels = random_slice(images, labels, self.times, self.random_width, use=True, is_train=self.is_train)
+        images, labels = random_slice(images, labels, self.times, self.random_width, use=False, is_train=self.is_train)
+        # images, labels = random_slice(images, labels, self.times, self.random_width, use=True, is_train=self.is_train)
         ###############
 
 
