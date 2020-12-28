@@ -15,4 +15,5 @@
 # task 
 cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='BaseLineModel' --use_gpu_num=4 --lr_decay=0.1 --description='_+r0_dec'
 
-# 测试新Git
+# 测试 New Git的性能
+cd /home/sunjindong/BrainstormBraTS2020 && python main.py train --model='BaseLineModel' --use_gpu_num=4 --lr_decay=0.1 --description='_+r0_dec'
